@@ -1,0 +1,38 @@
+# Scrapy Dependencies
+
+# Scraping Framework
+scrapy==2.11.0
+playwright==1.41.0
+
+# HTTP & Parsing
+beautifulsoup4==4.12.2
+lxml==5.1.0
+html5lib==1.1
+
+# Data Processing
+pandas==2.1.4
+python-dateutil==2.8.2
+
+# Database
+supabase==2.3.0
+
+# Task Queue & Scheduling
+apscheduler==3.10.4
+redis==5.0.1
+rq==1.15.1
+
+# Configuration
+python-dotenv==1.0.0
+pyyaml==6.0.1
+
+# Utilities
+fake-useragent==1.4.0
+w3lib==2.1.2
+
+# Development & Testing
+pytest==7.4.4
+scrapy-playwright==0.0.32
+
+# Code Quality
+black==24.1.1
+ruff==0.1.11

@@ -1,0 +1,112 @@
+# Render Blueprint for Admitly Platform
+# https://render.com/docs/blueprint-spec
+
+services:
+  # FastAPI Backend
+  - type: web
+    name: admitly-api
+    env: python
+    region: oregon
+    plan: standard
+    buildCommand: "cd services/api && pip install -r requirements.txt"
+    startCommand: "cd services/api && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: MEILISEARCH_HOST
+        sync: false
+      - key: MEILISEARCH_API_KEY
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CLAUDE_API_KEY
+        sync: false
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+
+  # Background Workers (Scrapers)
+  - type: worker
+    name: admitly-scrapers
+    env: python
+    region: oregon
+    plan: standard
+    buildCommand: "cd services/scrapers && pip install -r requirements.txt"
+    startCommand: "cd services/scrapers && python worker.py"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: REDIS_URL
+        sync: false
+
+  # Meilisearch
+  - type: pserv
+    name: admitly-meilisearch
+    env: docker
+    region: oregon
+    plan: standard
+    dockerfilePath: ./services/meilisearch/Dockerfile
+    disk:
+      name: meilisearch-data
+      mountPath: /data.ms
+      sizeGB: 10
+    envVars:
+      - key: MEILI_MASTER_KEY
+        generateValue: true
+      - key: MEILI_ENV
+        value: production
+
+  # Web Frontend
+  - type: static
+    name: admitly-web
+    env: static
+    region: oregon
+    buildCommand: "cd apps/web && pnpm install && pnpm build"
+    staticPublishPath: apps/web/dist
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+    envVars:
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: VITE_API_URL
+        sync: false
+      - key: VITE_MEILISEARCH_HOST
+        sync: false
+
+  # Admin Portal
+  - type: static
+    name: admitly-admin
+    env: static
+    region: oregon
+    buildCommand: "cd apps/admin && pnpm install && pnpm build"
+    staticPublishPath: apps/admin/dist
+    envVars:
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: VITE_API_URL
+        sync: false
+
+databases:
+  - name: admitly-redis
+    plan: standard
+    region: oregon

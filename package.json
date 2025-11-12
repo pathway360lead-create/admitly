@@ -1,0 +1,48 @@
+{
+  "name": "admitly",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nigeria Student Data Services Platform",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter \"./apps/**\" dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev:mobile": "pnpm --filter mobile dev",
+    "dev:admin": "pnpm --filter admin dev",
+    "build": "pnpm --filter \"./apps/**\" build",
+    "build:web": "pnpm --filter web build",
+    "build:admin": "pnpm --filter admin build",
+    "test": "pnpm --filter \"./apps/**\" --filter \"./packages/**\" test",
+    "test:e2e": "pnpm --filter web test:e2e",
+    "lint": "pnpm --filter \"./apps/**\" --filter \"./packages/**\" lint",
+    "typecheck": "pnpm --filter \"./apps/**\" --filter \"./packages/**\" typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "clean": "pnpm --filter \"./apps/**\" --filter \"./packages/**\" clean",
+    "generate:types": "pnpm --filter api-client generate"
+  },
+  "keywords": [
+    "education",
+    "nigeria",
+    "admissions",
+    "universities",
+    "polytechnics"
+  ],
+  "author": "Admitly Team",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/admitly/admitly.git"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
+  }
+}

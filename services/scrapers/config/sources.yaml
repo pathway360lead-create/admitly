@@ -1,0 +1,38 @@
+# Institution Data Sources Configuration
+# Configure scraping strategies for each institution
+
+institutions:
+  - id: unilag
+    name: University of Lagos
+    url: https://www.unilag.edu.ng
+    type: federal_university
+    state: Lagos
+    scrape_config:
+      programs_url: https://www.unilag.edu.ng/programmes
+      admissions_url: https://www.unilag.edu.ng/admissions
+      schedule: daily  # daily, weekly, monthly
+      requires_js: false
+
+  - id: ui
+    name: University of Ibadan
+    url: https://www.ui.edu.ng
+    type: federal_university
+    state: Oyo
+    scrape_config:
+      programs_url: https://www.ui.edu.ng/programmes
+      admissions_url: https://www.ui.edu.ng/admissions
+      schedule: daily
+      requires_js: false
+
+  # Add more institutions here
+  # Template:
+  # - id: institution_slug
+  #   name: Institution Name
+  #   url: https://example.com
+  #   type: federal_university|state_university|private_university|polytechnic
+  #   state: State Name
+  #   scrape_config:
+  #     programs_url: URL to programs page
+  #     admissions_url: URL to admissions page
+  #     schedule: daily|weekly|monthly
+  #     requires_js: true|false

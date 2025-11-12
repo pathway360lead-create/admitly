@@ -1,0 +1,28 @@
+{
+  "name": "Admitly - Nigeria Student Data Services",
+  "short_name": "Admitly",
+  "description": "Get Admitted, Confidently. Nigeria's most trusted platform for educational decision-making.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563EB",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "screenshots": [],
+  "lang": "en-NG",
+  "dir": "ltr"
+}

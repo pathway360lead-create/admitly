@@ -1,0 +1,25 @@
+# AI Service Dependencies
+
+# AI SDKs
+google-generativeai==0.3.2
+anthropic==0.8.1
+
+# HTTP
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+httpx==0.26.0
+
+# Database
+supabase==2.3.0
+
+# Caching
+redis==5.0.1
+
+# Configuration
+python-dotenv==1.0.0
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Development
+pytest==7.4.4
+black==24.1.1
