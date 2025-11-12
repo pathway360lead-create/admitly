@@ -57,7 +57,6 @@ services:
   - type: web
     name: admitly-web
     env: static
-    region: oregon
     buildCommand: "cd apps/web && pnpm install && pnpm build"
     staticPublishPath: apps/web/dist
     headers:
@@ -78,7 +77,6 @@ services:
   - type: web
     name: admitly-admin
     env: static
-    region: oregon
     buildCommand: "cd apps/admin && pnpm install && pnpm build"
     staticPublishPath: apps/admin/dist
     envVars:
