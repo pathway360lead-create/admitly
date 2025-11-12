@@ -53,25 +53,8 @@ services:
       - key: REDIS_URL
         sync: false
 
-  # Meilisearch
-  - type: pserv
-    name: admitly-meilisearch
-    env: docker
-    region: oregon
-    plan: standard
-    dockerfilePath: ./services/meilisearch/Dockerfile
-    disk:
-      name: meilisearch-data
-      mountPath: /data.ms
-      sizeGB: 10
-    envVars:
-      - key: MEILI_MASTER_KEY
-        generateValue: true
-      - key: MEILI_ENV
-        value: production
-
   # Web Frontend
-  - type: static
+  - type: web
     name: admitly-web
     env: static
     region: oregon
@@ -92,7 +75,7 @@ services:
         sync: false
 
   # Admin Portal
-  - type: static
+  - type: web
     name: admitly-admin
     env: static
     region: oregon
@@ -105,8 +88,3 @@ services:
         sync: false
       - key: VITE_API_URL
         sync: false
-
-databases:
-  - name: admitly-redis
-    plan: standard
-    region: oregon
