@@ -122,22 +122,48 @@ export class AdmitlyAPIClient {
 
   private getToken(): string | null {
     // Get token from localStorage (browser) or other storage
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('access_token');
+    if (typeof window === 'undefined') return null;
+
+    const token = localStorage.getItem('access_token');
+    const expiry = localStorage.getItem('token_expiry');
+
+    // Check if token exists and hasn't expired
+    if (token && expiry) {
+      const expiryTime = parseInt(expiry, 10);
+
+      if (Date.now() < expiryTime) {
+        return token;
+      }
+
+      // Token has expired, clean up
+      this.clearToken();
+      console.warn('[AdmitlyAPI] Token expired and cleared from storage');
     }
+
     return null;
   }
 
-  setToken(token: string) {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('access_token', token);
-    }
+  /**
+   * Set authentication token with expiration
+   * @param token - JWT token
+   * @param expiresIn - Expiration time in milliseconds (default: 1 hour)
+   */
+  setToken(token: string, expiresIn: number = 3600000) {
+    if (typeof window === 'undefined') return;
+
+    const expiryTime = Date.now() + expiresIn;
+    localStorage.setItem('access_token', token);
+    localStorage.setItem('token_expiry', expiryTime.toString());
   }
 
+  /**
+   * Clear authentication token and expiry from storage
+   */
   clearToken() {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('access_token');
-    }
+    if (typeof window === 'undefined') return;
+
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('token_expiry');
   }
 
   // ============================================================================
