@@ -1,10 +1,12 @@
 import { FC, useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useSearch } from '@/hooks/api';
+import { SearchFilters } from '@/components/organisms/SearchFilters';
 import { Button } from '@admitly/ui';
-import { Search, Filter, X } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { ProgramCard } from '@/components/molecules/ProgramCard';
 import { InstitutionCard } from '@/components/molecules/InstitutionCard';
+import { useSearchFilterStore } from '@/stores/searchFilterStore';
 
 type ResultType = 'all' | 'programs' | 'institutions';
 
@@ -14,21 +16,43 @@ export const SearchPage: FC = () => {
 
   const [searchQuery, setSearchQuery] = useState(query);
   const [resultType, setResultType] = useState<ResultType>('all');
-  const [showFilters, setShowFilters] = useState(false);
 
-  // Filters
-  const [selectedState, setSelectedState] = useState<string>('');
-  const [selectedType, setSelectedType] = useState<string>('');
+  const {
+    filters,
+    setFilter,
+    filtersFromURLParams,
+    filtersToURLParams,
+  } = useSearchFilterStore();
+
+  // Sync filters with URL on mount
+  useEffect(() => {
+    filtersFromURLParams(searchParams);
+    if (query) {
+      setFilter('search', query);
+    }
+  }, []); // Only run on mount
+
+  // Sync filters to URL when they change
+  useEffect(() => {
+    const params = filtersToURLParams();
+    // Also include the 'q' parameter for backward compatibility
+    if (filters.search) {
+      params.set('q', filters.search);
+    }
+    setSearchParams(params, { replace: true });
+  }, [filters, setSearchParams, filtersToURLParams]);
 
   // Update searchQuery when URL query param changes
   useEffect(() => {
     setSearchQuery(query);
+    if (query && query !== filters.search) {
+      setFilter('search', query);
+    }
   }, [query]);
 
   // Fetch search results from API
-  const { data, isLoading, isError, error } = useSearch(query, {
-    // Note: state and type filters would go in the filters object if API supports them
-    // For now, we'll filter client-side or wait for API support
+  const { data, isLoading, isError, error } = useSearch(filters.search || '', {
+    // Additional filters would go here when API supports them
   });
 
   const rawSearchResults = {
@@ -36,27 +60,44 @@ export const SearchPage: FC = () => {
     institutions: data?.institutions || [],
   };
 
-  // Apply client-side filters (until API supports them)
+  // Apply client-side filters (until API supports them fully)
   const filteredResults = {
-    programs: rawSearchResults.programs.filter(prog => {
-      if (selectedState && prog.institution?.state !== selectedState) return false;
+    programs: rawSearchResults.programs.filter((prog) => {
+      if (filters.state && prog.institution?.state !== filters.state) return false;
+      if (filters.degreeType && filters.degreeType.length > 0) {
+        if (!filters.degreeType.includes(prog.degree_type)) return false;
+      }
+      if (filters.mode && filters.mode.length > 0) {
+        if (!filters.mode.includes(prog.mode as any)) return false;
+      }
+      if (filters.minTuition !== undefined && prog.tuition_per_year < filters.minTuition)
+        return false;
+      if (filters.maxTuition !== undefined && prog.tuition_per_year > filters.maxTuition)
+        return false;
+      if (filters.minCutoff !== undefined && prog.cutoff_score && prog.cutoff_score < filters.minCutoff)
+        return false;
+      if (filters.maxCutoff !== undefined && prog.cutoff_score && prog.cutoff_score > filters.maxCutoff)
+        return false;
       return true;
     }),
-    institutions: rawSearchResults.institutions.filter(inst => {
-      if (selectedState && inst.state !== selectedState) return false;
-      if (selectedType && inst.type !== selectedType) return false;
+    institutions: rawSearchResults.institutions.filter((inst) => {
+      if (filters.state && inst.state !== filters.state) return false;
+      if (filters.institutionType && filters.institutionType.length > 0) {
+        if (!filters.institutionType.includes(inst.type)) return false;
+      }
+      if (filters.verified !== undefined && inst.verified !== filters.verified) return false;
       return true;
     }),
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    setFilter('search', searchQuery || undefined);
     setSearchParams({ q: searchQuery });
   };
 
-  const clearFilters = () => {
-    setSelectedState('');
-    setSelectedType('');
+  const handleFilterChange = () => {
+    // Filters are already updated via the store
   };
 
   const totalResults = filteredResults.programs.length + filteredResults.institutions.length;
@@ -69,7 +110,7 @@ export const SearchPage: FC = () => {
         {/* Search Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Search Results {query && `for "${query}"`}
+            Search Results {filters.search && `for "${filters.search}"`}
           </h1>
 
           {/* Search Bar */}
@@ -85,69 +126,7 @@ export const SearchPage: FC = () => {
               />
             </div>
             <Button type="submit">Search</Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2"
-            >
-              <Filter className="h-4 w-4" />
-              Filters
-            </Button>
           </form>
-
-          {/* Filters Panel */}
-          {showFilters && (
-            <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-semibold">Filters</h3>
-                <button
-                  onClick={clearFilters}
-                  className="text-sm text-primary hover:text-primary/80 flex items-center gap-1"
-                >
-                  <X className="h-4 w-4" />
-                  Clear all
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
-                  <select
-                    value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  >
-                    <option value="">All States</option>
-                    <option value="Lagos">Lagos</option>
-                    <option value="Oyo">Oyo</option>
-                    <option value="Osun">Osun</option>
-                    <option value="Kaduna">Kaduna</option>
-                    <option value="Ogun">Ogun</option>
-                    <option value="Enugu">Enugu</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Institution Type
-                  </label>
-                  <select
-                    value={selectedType}
-                    onChange={(e) => setSelectedType(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  >
-                    <option value="">All Types</option>
-                    <option value="federal_university">Federal University</option>
-                    <option value="state_university">State University</option>
-                    <option value="private_university">Private University</option>
-                    <option value="polytechnic">Polytechnic</option>
-                    <option value="college_of_education">College of Education</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Result Type Tabs */}
           <div className="flex gap-2">
@@ -184,70 +163,95 @@ export const SearchPage: FC = () => {
           </div>
         </div>
 
-        {/* Results */}
-        {!query ? (
-          <div className="bg-white rounded-lg p-12 text-center">
-            <Search className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Start searching</h3>
-            <p className="text-gray-600 mb-6">
-              Enter a search query to find programs and institutions
-            </p>
-          </div>
-        ) : isLoading ? (
-          <div className="space-y-8">
-            <div className="text-center py-12">
-              <div className="h-12 w-12 bg-gray-200 animate-pulse rounded-lg mx-auto mb-4" />
-              <p className="text-gray-600">Searching...</p>
+        {/* Main Content: Filters + Results */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Filters Sidebar (Desktop) */}
+          <aside className="hidden lg:block lg:col-span-1">
+            <div className="sticky top-4">
+              <SearchFilters
+                filterType="all"
+                onFilterChange={handleFilterChange}
+                resultsCount={totalResults}
+              />
             </div>
-          </div>
-        ) : isError ? (
-          <div className="bg-white rounded-lg p-12 text-center">
-            <h3 className="text-lg font-semibold text-red-600 mb-2">Search Error</h3>
-            <p className="text-gray-600 mb-6">
-              {error?.message || 'Failed to search. Please try again.'}
-            </p>
-            <Button onClick={() => window.location.reload()}>Retry</Button>
-          </div>
-        ) : totalResults === 0 ? (
-          <div className="bg-white rounded-lg p-12 text-center">
-            <Search className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No results found</h3>
-            <p className="text-gray-600 mb-6">
-              Try adjusting your search query or filters
-            </p>
-            <Button onClick={clearFilters}>Clear Filters</Button>
-          </div>
-        ) : (
-          <div className="space-y-8">
-            {/* Programs Section */}
-            {displayedPrograms.length > 0 && (
-              <div>
-                <h2 className="text-xl font-semibold mb-4">
-                  Programs ({displayedPrograms.length})
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {displayedPrograms.map((program) => (
-                    <ProgramCard key={program.id} program={program} showInstitution />
-                  ))}
-                </div>
-              </div>
-            )}
+          </aside>
 
-            {/* Institutions Section */}
-            {displayedInstitutions.length > 0 && (
-              <div>
-                <h2 className="text-xl font-semibold mb-4">
-                  Institutions ({displayedInstitutions.length})
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {displayedInstitutions.map((institution) => (
-                    <InstitutionCard key={institution.id} institution={institution} />
-                  ))}
+          {/* Mobile Filters (Collapsible) */}
+          <div className="lg:hidden col-span-1">
+            <SearchFilters
+              filterType="all"
+              onFilterChange={handleFilterChange}
+              resultsCount={totalResults}
+              compact
+            />
+          </div>
+
+          {/* Results */}
+          <main className="lg:col-span-3">
+            {!filters.search ? (
+              <div className="bg-white rounded-lg p-12 text-center">
+                <Search className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Start searching</h3>
+                <p className="text-gray-600 mb-6">
+                  Enter a search query to find programs and institutions
+                </p>
+              </div>
+            ) : isLoading ? (
+              <div className="space-y-8">
+                <div className="text-center py-12">
+                  <div className="h-12 w-12 bg-gray-200 animate-pulse rounded-lg mx-auto mb-4" />
+                  <p className="text-gray-600">Searching...</p>
                 </div>
               </div>
+            ) : isError ? (
+              <div className="bg-white rounded-lg p-12 text-center">
+                <h3 className="text-lg font-semibold text-red-600 mb-2">Search Error</h3>
+                <p className="text-gray-600 mb-6">
+                  {error?.message || 'Failed to search. Please try again.'}
+                </p>
+                <Button onClick={() => window.location.reload()}>Retry</Button>
+              </div>
+            ) : totalResults === 0 ? (
+              <div className="bg-white rounded-lg p-12 text-center">
+                <Search className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No results found</h3>
+                <p className="text-gray-600 mb-6">
+                  Try adjusting your search query or filters
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-8">
+                {/* Programs Section */}
+                {displayedPrograms.length > 0 && (
+                  <div>
+                    <h2 className="text-xl font-semibold mb-4">
+                      Programs ({displayedPrograms.length})
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                      {displayedPrograms.map((program) => (
+                        <ProgramCard key={program.id} program={program} showInstitution />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Institutions Section */}
+                {displayedInstitutions.length > 0 && (
+                  <div>
+                    <h2 className="text-xl font-semibold mb-4">
+                      Institutions ({displayedInstitutions.length})
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                      {displayedInstitutions.map((institution) => (
+                        <InstitutionCard key={institution.id} institution={institution} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
-          </div>
-        )}
+          </main>
+        </div>
       </div>
     </div>
   );

@@ -37,3 +37,5 @@ export { Avatar, AvatarImage, AvatarFallback, avatarVariants } from './component
 export { Checkbox } from './components/checkbox';
 export { Radio, RadioGroup } from './components/radio';
 export { Switch } from './components/switch';
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './components/accordion';
+export { Slider } from './components/slider';
