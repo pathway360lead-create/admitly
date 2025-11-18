@@ -5,7 +5,6 @@ import type {
   DegreeType,
   UserRole,
   SubscriptionStatus,
-  ApplicationStatus,
   NigerianState,
 } from './enums';
 
