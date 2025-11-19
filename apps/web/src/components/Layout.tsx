@@ -1,8 +1,9 @@
 import { FC, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Header } from './organisms/Header';
 import { Footer } from './organisms/Footer';
+import { ComparisonTray } from './organisms/ComparisonTray';
 
 interface LayoutProps {
   children: ReactNode;
@@ -10,6 +11,7 @@ interface LayoutProps {
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, user, logout } = useAuth();
 
   const handleLogin = () => {
@@ -35,6 +37,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
       />
       <main className="flex-1">{children}</main>
       <Footer />
+      {location.pathname !== '/compare' && <ComparisonTray />}
     </div>
   );
 };
