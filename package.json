@@ -15,7 +15,9 @@
     "build": "pnpm --filter \"./apps/**\" build",
     "build:web": "pnpm --filter web build",
     "build:admin": "pnpm --filter admin build",
-    "test": "pnpm --filter \"./apps/**\" --filter \"./packages/**\" test",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
     "test:e2e": "pnpm --filter web test:e2e",
     "lint": "pnpm --filter \"./apps/**\" --filter \"./packages/**\" lint",
     "typecheck": "pnpm --filter \"./apps/**\" --filter \"./packages/**\" typecheck",
@@ -41,8 +43,15 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.1",
     "@types/node": "^20.10.0",
+    "@vitest/coverage-v8": "^4.0.10",
+    "@vitest/ui": "^1.0.4",
+    "happy-dom": "^12.10.3",
     "prettier": "^3.1.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.4"
   }
 }
