@@ -191,16 +191,16 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
               </AccordionTrigger>
               <AccordionContent>
                 <Select
-                  value={filters.state || ''}
+                  value={filters.state || 'all'}
                   onValueChange={(value) =>
-                    setFilter('state', (value as any) || undefined)
+                    setFilter('state', value === 'all' ? undefined : (value as any))
                   }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="All States" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All States</SelectItem>
+                    <SelectItem value="all">All States</SelectItem>
                     {NIGERIAN_STATES.map((state) => (
                       <SelectItem key={state} value={state}>
                         {state}
@@ -402,16 +402,16 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
                 </AccordionTrigger>
                 <AccordionContent>
                   <Select
-                    value={filters.fieldOfStudy || ''}
+                    value={filters.fieldOfStudy || 'all'}
                     onValueChange={(value) =>
-                      setFilter('fieldOfStudy', value || undefined)
+                      setFilter('fieldOfStudy', value === 'all' ? undefined : value)
                     }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="All Fields" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Fields</SelectItem>
+                      <SelectItem value="all">All Fields</SelectItem>
                       {FIELD_OF_STUDY_OPTIONS.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
