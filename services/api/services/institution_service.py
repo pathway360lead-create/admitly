@@ -89,19 +89,33 @@ class InstitutionService:
                 has_next=filters.page < total_pages
             )
 
-            # Parse data and add program_count for each institution
-            institutions = []
-            for item in response.data:
-                # Count programs for this institution
-                program_count_response = (
+            # OPTIMIZATION: Fetch program counts for ALL institutions in single query
+            # This prevents N+1 query problem (was: 1 institutions query + N program count queries)
+            # Now: 1 institutions query + 1 aggregated program counts query
+            institution_ids = [item['id'] for item in response.data]
+
+            # Get program counts for all institutions at once
+            program_counts_dict = {}
+            if institution_ids:
+                # Query all programs for these institutions
+                programs_response = (
                     self.supabase.table('programs')
-                    .select('id', count='exact')
-                    .eq('institution_id', item['id'])
+                    .select('institution_id')
+                    .in_('institution_id', institution_ids)
                     .eq('status', 'published')
                     .is_('deleted_at', 'null')
                     .execute()
                 )
-                item['program_count'] = program_count_response.count or 0
+
+                # Count programs per institution in Python (O(n) operation, very fast)
+                for program in programs_response.data:
+                    inst_id = program['institution_id']
+                    program_counts_dict[inst_id] = program_counts_dict.get(inst_id, 0) + 1
+
+            # Parse data and add program_count from our pre-computed dictionary
+            institutions = []
+            for item in response.data:
+                item['program_count'] = program_counts_dict.get(item['id'], 0)
                 institutions.append(InstitutionBase(**item))
 
             return InstitutionListResponse(
@@ -147,14 +161,15 @@ class InstitutionService:
                     detail=f"Institution with slug '{slug}' not found"
                 )
 
-            # Add program_count
+            # Add program_count (optimized: use count='exact' for single query)
             institution_data = response.data
             program_count_response = (
                 self.supabase.table('programs')
-                .select('id', count='exact')
+                .select('*', count='exact')
                 .eq('institution_id', institution_data['id'])
                 .eq('status', 'published')
                 .is_('deleted_at', 'null')
+                .limit(0)  # We only need the count, not the data
                 .execute()
             )
             institution_data['program_count'] = program_count_response.count or 0
