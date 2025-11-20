@@ -39,3 +39,19 @@ async def get_current_admin_user(
     # TODO: Check user role from database
     # For now, just return the user
     return current_user
+
+
+def get_institution_service(
+    supabase: Client = Depends(get_supabase),
+):
+    """Get institution service instance"""
+    from services.institution_service import InstitutionService
+    return InstitutionService(supabase)
+
+
+def get_program_service(
+    supabase: Client = Depends(get_supabase),
+):
+    """Get program service instance"""
+    from services.program_service import ProgramService
+    return ProgramService(supabase)
