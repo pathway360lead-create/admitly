@@ -89,8 +89,20 @@ class InstitutionService:
                 has_next=filters.page < total_pages
             )
 
-            # Parse data
-            institutions = [InstitutionBase(**item) for item in response.data]
+            # Parse data and add program_count for each institution
+            institutions = []
+            for item in response.data:
+                # Count programs for this institution
+                program_count_response = (
+                    self.supabase.table('programs')
+                    .select('id', count='exact')
+                    .eq('institution_id', item['id'])
+                    .eq('status', 'published')
+                    .is_('deleted_at', 'null')
+                    .execute()
+                )
+                item['program_count'] = program_count_response.count or 0
+                institutions.append(InstitutionBase(**item))
 
             return InstitutionListResponse(
                 data=institutions,
@@ -135,7 +147,19 @@ class InstitutionService:
                     detail=f"Institution with slug '{slug}' not found"
                 )
 
-            return InstitutionResponse(**response.data)
+            # Add program_count
+            institution_data = response.data
+            program_count_response = (
+                self.supabase.table('programs')
+                .select('id', count='exact')
+                .eq('institution_id', institution_data['id'])
+                .eq('status', 'published')
+                .is_('deleted_at', 'null')
+                .execute()
+            )
+            institution_data['program_count'] = program_count_response.count or 0
+
+            return InstitutionResponse(**institution_data)
 
         except HTTPException:
             raise

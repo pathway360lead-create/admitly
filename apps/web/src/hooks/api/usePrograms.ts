@@ -7,7 +7,7 @@ import { mockPrograms } from '@/lib/mockData';
 const apiClient = createClient(import.meta.env.VITE_API_URL || 'http://localhost:8000');
 
 // TEMPORARY: Use mock data flag (set to true until backend is running)
-const USE_MOCK_DATA = true;
+const USE_MOCK_DATA = false;
 
 /**
  * Get list of programs with filters
