@@ -66,12 +66,15 @@ async def root():
 
 
 # Register routers
-# TODO: Import and include routers as they are created
-# from routers import institutions, programs, search, users
+from routers.auth import router as auth_router
+
+app.include_router(auth_router, prefix="/api/v1", tags=["auth"])
+
+# TODO: Import and include additional routers as they are created
+# from routers import institutions, programs, search
 # app.include_router(institutions.router)
 # app.include_router(programs.router)
 # app.include_router(search.router)
-# app.include_router(users.router)
 
 
 if __name__ == "__main__":

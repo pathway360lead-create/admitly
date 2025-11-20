@@ -2,7 +2,8 @@
 Application Configuration
 """
 from pydantic_settings import BaseSettings
-from typing import List
+from typing import List, Union
+from pydantic import field_validator
 
 
 class Settings(BaseSettings):
@@ -42,14 +43,26 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
     # CORS
-    CORS_ORIGINS: List[str] = [
+    CORS_ORIGINS: Union[str, List[str]] = [
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:3000",
     ]
 
+    @field_validator('CORS_ORIGINS', mode='before')
+    @classmethod
+    def parse_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
+        """Parse CORS origins from comma-separated string or list"""
+        if isinstance(v, str):
+            return [origin.strip() for origin in v.split(',')]
+        return v
+
     # Monitoring
     SENTRY_DSN: str = ""
+
+    # Email
+    SENDGRID_API_KEY: str = ""
+    FROM_EMAIL: str = "noreply@admitly.com.ng"
 
     class Config:
         env_file = ".env"
