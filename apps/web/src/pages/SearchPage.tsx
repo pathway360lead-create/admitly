@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useSearch } from '@/hooks/api';
 import { SearchFilters } from '@/components/organisms/SearchFilters';
@@ -7,8 +7,54 @@ import { Search } from 'lucide-react';
 import { ProgramCard } from '@/components/molecules/ProgramCard';
 import { InstitutionCard } from '@/components/molecules/InstitutionCard';
 import { useSearchFilterStore } from '@/stores/searchFilterStore';
+import type { SearchFilters as APISearchFilters, SearchType } from '@/types/search';
 
 type ResultType = 'all' | 'programs' | 'institutions';
+
+/**
+ * Convert frontend filter state to API search filters format
+ */
+function convertFiltersToAPIFormat(
+  frontendFilters: { [key: string]: any }
+): APISearchFilters {
+  const apiFilters: APISearchFilters = {};
+
+  // Institution filters
+  if (frontendFilters.institutionType && frontendFilters.institutionType.length > 0) {
+    apiFilters.institution_type = frontendFilters.institutionType;
+  }
+  if (frontendFilters.state) {
+    apiFilters.state = [frontendFilters.state];
+  }
+  if (frontendFilters.verified !== undefined) {
+    apiFilters.verified = frontendFilters.verified;
+  }
+
+  // Program filters
+  if (frontendFilters.degreeType && frontendFilters.degreeType.length > 0) {
+    apiFilters.degree_type = frontendFilters.degreeType;
+  }
+  if (frontendFilters.fieldOfStudy) {
+    apiFilters.field_of_study = [frontendFilters.fieldOfStudy];
+  }
+  if (frontendFilters.mode && frontendFilters.mode.length > 0) {
+    apiFilters.mode = frontendFilters.mode;
+  }
+  if (frontendFilters.minTuition !== undefined) {
+    apiFilters.min_tuition = frontendFilters.minTuition;
+  }
+  if (frontendFilters.maxTuition !== undefined) {
+    apiFilters.max_tuition = frontendFilters.maxTuition;
+  }
+  if (frontendFilters.minCutoff !== undefined) {
+    apiFilters.min_cutoff = frontendFilters.minCutoff;
+  }
+  if (frontendFilters.maxCutoff !== undefined) {
+    apiFilters.max_cutoff = frontendFilters.maxCutoff;
+  }
+
+  return apiFilters;
+}
 
 export const SearchPage: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -50,45 +96,27 @@ export const SearchPage: FC = () => {
     }
   }, [query]);
 
+  // Convert frontend filters to API format
+  const apiFilters = useMemo(() => convertFiltersToAPIFormat(filters), [filters]);
+
   // Fetch search results from API
-  const { data, isLoading, isError, error } = useSearch(filters.search || '', {
-    // Additional filters would go here when API supports them
+  const { data, isLoading, isError, error } = useSearch({
+    q: filters.search || '',
+    type: resultType as SearchType,
+    filters: apiFilters,
+    page: 1,
+    page_size: 50,
   });
 
-  const rawSearchResults = {
-    programs: data?.programs || [],
-    institutions: data?.institutions || [],
-  };
+  // Extract results from API response
+  const institutions = data?.data.institutions || [];
+  const programs = data?.data.programs || [];
+  const totalResults = data?.data.total_results || 0;
+  const searchTimeMs = data?.search_time_ms;
 
-  // Apply client-side filters (until API supports them fully)
-  const filteredResults = {
-    programs: rawSearchResults.programs.filter((prog) => {
-      if (filters.state && prog.institution?.state !== filters.state) return false;
-      if (filters.degreeType && filters.degreeType.length > 0) {
-        if (!filters.degreeType.includes(prog.degree_type)) return false;
-      }
-      if (filters.mode && filters.mode.length > 0) {
-        if (!filters.mode.includes(prog.mode as any)) return false;
-      }
-      if (filters.minTuition !== undefined && prog.tuition_per_year < filters.minTuition)
-        return false;
-      if (filters.maxTuition !== undefined && prog.tuition_per_year > filters.maxTuition)
-        return false;
-      if (filters.minCutoff !== undefined && prog.cutoff_score && prog.cutoff_score < filters.minCutoff)
-        return false;
-      if (filters.maxCutoff !== undefined && prog.cutoff_score && prog.cutoff_score > filters.maxCutoff)
-        return false;
-      return true;
-    }),
-    institutions: rawSearchResults.institutions.filter((inst) => {
-      if (filters.state && inst.state !== filters.state) return false;
-      if (filters.institutionType && filters.institutionType.length > 0) {
-        if (!filters.institutionType.includes(inst.type)) return false;
-      }
-      if (filters.verified !== undefined && inst.verified !== filters.verified) return false;
-      return true;
-    }),
-  };
+  // Determine what to display based on result type
+  const displayedPrograms = resultType === 'institutions' ? [] : programs;
+  const displayedInstitutions = resultType === 'programs' ? [] : institutions;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,10 +127,6 @@ export const SearchPage: FC = () => {
   const handleFilterChange = () => {
     // Filters are already updated via the store
   };
-
-  const totalResults = filteredResults.programs.length + filteredResults.institutions.length;
-  const displayedPrograms = resultType === 'institutions' ? [] : filteredResults.programs;
-  const displayedInstitutions = resultType === 'programs' ? [] : filteredResults.institutions;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -129,7 +153,7 @@ export const SearchPage: FC = () => {
           </form>
 
           {/* Result Type Tabs */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <button
               onClick={() => setResultType('all')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -148,7 +172,7 @@ export const SearchPage: FC = () => {
                   : 'bg-white text-gray-700 hover:bg-gray-50'
               }`}
             >
-              Programs ({filteredResults.programs.length})
+              Programs ({programs.length})
             </button>
             <button
               onClick={() => setResultType('institutions')}
@@ -158,8 +182,15 @@ export const SearchPage: FC = () => {
                   : 'bg-white text-gray-700 hover:bg-gray-50'
               }`}
             >
-              Institutions ({filteredResults.institutions.length})
+              Institutions ({institutions.length})
             </button>
+
+            {/* Search time display */}
+            {searchTimeMs !== undefined && (
+              <span className="ml-auto text-sm text-gray-500">
+                Search took {searchTimeMs.toFixed(0)}ms
+              </span>
+            )}
           </div>
         </div>
 
@@ -229,7 +260,37 @@ export const SearchPage: FC = () => {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                       {displayedPrograms.map((program) => (
-                        <ProgramCard key={program.id} program={program} showInstitution />
+                        <ProgramCard
+                          key={program.id}
+                          program={{
+                            id: program.id,
+                            slug: program.slug,
+                            name: program.name,
+                            degree_type: program.degree_type as import('@admitly/types').DegreeType,
+                            duration_years: program.duration_years || 0,
+                            mode: (program.mode || 'full_time') as 'full_time' | 'part_time' | 'online' | 'hybrid',
+                            tuition_per_year: program.tuition_annual || 0,
+                            cutoff_score: program.cutoff_score,
+                            institution_id: program.institution_id,
+                            status: 'published',
+                            created_at: '',
+                            updated_at: '',
+                            institution: {
+                              id: program.institution_id,
+                              slug: program.institution_slug,
+                              name: program.institution_name,
+                              state: program.institution_state as import('@admitly/types').NigerianState,
+                              type: 'federal_university',
+                              city: '',
+                              verified: true,
+                              status: 'published',
+                              program_count: 0,
+                              created_at: '',
+                              updated_at: '',
+                            },
+                          }}
+                          showInstitution
+                        />
                       ))}
                     </div>
                   </div>
@@ -243,7 +304,25 @@ export const SearchPage: FC = () => {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                       {displayedInstitutions.map((institution) => (
-                        <InstitutionCard key={institution.id} institution={institution} />
+                        <InstitutionCard
+                          key={institution.id}
+                          institution={{
+                            id: institution.id,
+                            slug: institution.slug,
+                            name: institution.name,
+                            short_name: institution.short_name,
+                            type: institution.type as import('@admitly/types').InstitutionType,
+                            state: institution.state as import('@admitly/types').NigerianState,
+                            city: institution.city,
+                            logo_url: institution.logo_url,
+                            website: institution.website,
+                            verified: institution.verified,
+                            program_count: institution.program_count,
+                            status: 'published',
+                            created_at: '',
+                            updated_at: '',
+                          }}
+                        />
                       ))}
                     </div>
                   </div>

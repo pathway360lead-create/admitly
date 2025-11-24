@@ -127,7 +127,7 @@ export function useInstitutionPrograms(
           const searchLower = filters.search.toLowerCase();
           filteredPrograms = filteredPrograms.filter(p =>
             p.name.toLowerCase().includes(searchLower) ||
-            p.field_of_study?.toLowerCase().includes(searchLower)
+            p.description?.toLowerCase().includes(searchLower)
           );
         }
 

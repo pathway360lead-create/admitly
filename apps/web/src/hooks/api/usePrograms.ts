@@ -33,15 +33,12 @@ export function usePrograms(
           const searchLower = filters.search.toLowerCase();
           filteredPrograms = filteredPrograms.filter(p =>
             p.name.toLowerCase().includes(searchLower) ||
-            p.field_of_study?.toLowerCase().includes(searchLower)
+            p.description?.toLowerCase().includes(searchLower)
           );
         }
 
-        if (filters.state && filters.state.length > 0) {
-          filteredPrograms = filteredPrograms.filter(p =>
-            filters.state?.includes(p.institution_state || '')
-          );
-        }
+        // Note: state filtering not applicable for programs
+        // Programs are filtered by institution, not directly by state
 
         return {
           data: filteredPrograms,

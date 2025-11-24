@@ -60,7 +60,6 @@ describe('SearchFilters Module', () => {
 
   describe('Type Definitions', () => {
     it('exports SearchFiltersProps type', async () => {
-      const types = await import('./types');
       // Type check - this will fail at compile time if type is missing
       const validFilterTypes: Array<'programs' | 'institutions' | 'all'> = [
         'programs',
