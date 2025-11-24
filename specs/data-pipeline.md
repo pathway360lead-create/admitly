@@ -900,7 +900,7 @@ alerts:
     condition: "scraper_runs_total{status='error'} > 3"
     window: "1h"
     action: "send_email"
-    recipients: ["admin@admitly.com.ng"]
+    recipients: ["admin@scholardata.ng"]
     message: "Scraper has failed 3 times in the last hour"
 
   - name: "Data Freshness Warning"
