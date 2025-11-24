@@ -4,9 +4,19 @@ FastAPI Dependencies
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from supabase import Client
+import meilisearch
 from core.database import get_supabase, get_supabase_admin
+from core.config import settings
 
 security = HTTPBearer()
+
+
+def get_meilisearch_client() -> meilisearch.Client:
+    """Get Meilisearch client instance"""
+    return meilisearch.Client(
+        settings.MEILISEARCH_HOST,
+        settings.MEILISEARCH_API_KEY
+    )
 
 
 async def get_current_user(
@@ -55,3 +65,11 @@ def get_program_service(
     """Get program service instance"""
     from services.program_service import ProgramService
     return ProgramService(supabase)
+
+
+def get_search_service(
+    meilisearch_client: meilisearch.Client = Depends(get_meilisearch_client),
+):
+    """Get search service instance"""
+    from services.search_service import SearchService
+    return SearchService(meilisearch_client)

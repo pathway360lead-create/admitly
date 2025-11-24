@@ -69,14 +69,12 @@ async def root():
 from routers.auth import router as auth_router
 from routers.institutions import router as institutions_router
 from routers.programs import router as programs_router
+from routers.search import router as search_router
 
 app.include_router(auth_router, prefix="/api/v1", tags=["auth"])
 app.include_router(institutions_router, prefix="/api/v1")
 app.include_router(programs_router, prefix="/api/v1")
-
-# TODO: Import and include additional routers as they are created
-# from routers import search
-# app.include_router(search.router)
+app.include_router(search_router)
 
 
 if __name__ == "__main__":
