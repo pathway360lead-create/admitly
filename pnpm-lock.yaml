@@ -251,7 +251,7 @@ importers:
         version: 4.5.7(@types/react@18.2.79)(react@18.3.1)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.40.1
+        specifier: ^1.56.1
         version: 1.56.1
       '@tanstack/react-query-devtools':
         specifier: ^5.90.2

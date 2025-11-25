@@ -43,6 +43,7 @@ Phase 4 implements a fast, typo-tolerant search system using Meilisearch for the
 - `services/api/scripts/setup_meilisearch.py` - Index creation and configuration script
 
 **Features:**
+
 - Institutions index with 5 searchable attributes
 - Programs index with 5 searchable attributes
 - Filterable attributes for advanced filtering
