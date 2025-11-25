@@ -1452,7 +1452,7 @@ cd apps/web && pnpm dev
 | Phase 3: Core APIs | 5-7 days | ✅ Completed |
 | Phase 4: Search Integration | 3-4 days | ✅ Completed |
 | Phase 5: Frontend Integration | 2-3 days | ✅ Completed |
-| Phase 6: Data Pipeline | 2 weeks | ⏳ Pending |
+| Phase 6: Data Pipeline | 2 weeks | ✅ MVP Complete |
 | Phase 7: Admin Portal | 1 week | ⏳ Deferred |
 | **Total** | **3-4 weeks** | |
 
