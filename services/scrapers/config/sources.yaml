@@ -24,6 +24,17 @@ institutions:
       schedule: daily
       requires_js: false
 
+  - id: oau
+    name: Obafemi Awolowo University
+    url: https://oauife.edu.ng
+    type: federal_university
+    state: Osun
+    scrape_config:
+      programs_url: https://oauife.edu.ng/programmes
+      admissions_url: https://oauife.edu.ng/admissions
+      schedule: daily
+      requires_js: false
+
   # Add more institutions here
   # Template:
   # - id: institution_slug

@@ -51,10 +51,11 @@ DOWNLOADER_MIDDLEWARES = {
 }
 
 # Configure item pipelines
+# Order: validation -> deduplication -> sync to Supabase
 ITEM_PIPELINES = {
     "pipelines.validation.ValidationPipeline": 100,
-    "pipelines.normalization.NormalizationPipeline": 200,
-    "pipelines.storage.SupabaseStoragePipeline": 300,
+    "pipelines.validation.DuplicateFilterPipeline": 200,
+    "pipelines.supabase_sync.SupabaseSyncPipeline": 300,
 }
 
 # Enable and configure HTTP caching
