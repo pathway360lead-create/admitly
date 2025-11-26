@@ -1,7 +1,7 @@
 # Render Blueprint for Admitly Platform
 # https://render.com/docs/blueprint-spec
-# Version: 1.0
-# Last Updated: November 25, 2025
+# Version: 1.1
+# Last Updated: November 25, 2025 - Fixed for free tier compatibility
 
 services:
   # ============================================
@@ -48,6 +48,8 @@ services:
 
   # ============================================
   # MEILISEARCH - Search Engine
+  # NOTE: Free tier doesn't support persistent disks
+  # Data will be lost on service restart (acceptable for MVP)
   # ============================================
   - type: web
     name: admitly-search
@@ -56,10 +58,6 @@ services:
     plan: free
     dockerfilePath: ./services/meilisearch/Dockerfile
     dockerContext: ./services/meilisearch
-    disk:
-      name: meilisearch-data
-      mountPath: /meili_data
-      sizeGB: 1
     healthCheckPath: /health
     autoDeploy: true
     envVars:
@@ -69,17 +67,14 @@ services:
         value: production
       - key: MEILI_HTTP_ADDR
         value: 0.0.0.0:$PORT
-      - key: MEILI_DB_PATH
-        value: /meili_data
 
   # ============================================
   # FRONTEND - React Web Application
+  # NOTE: Static sites don't have region or plan options
   # ============================================
   - type: web
     name: admitly-web
     env: static
-    region: frankfurt
-    plan: free
     buildCommand: "cd apps/web && pnpm install && pnpm build"
     staticPublishPath: apps/web/dist
     pullRequestPreviewsEnabled: true
@@ -119,6 +114,11 @@ services:
 # - Auth service
 # - Storage
 # - Real-time subscriptions
+#
+# Meilisearch: No persistent disk on free tier
+# - Data will be re-indexed on each restart
+# - Acceptable for MVP testing
+# - Upgrade to paid plan for persistent storage
 #
 # Custom Domains (configure after deployment):
 # - api.admitly.com.ng → admitly-api
