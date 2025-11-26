@@ -29,7 +29,7 @@ services:
       - key: DEBUG
         value: false
       - key: CORS_ORIGINS
-        value: https://admitly.onrender.com,https://admitly.com.ng
+        value: https://admitly-web.onrender.com,https://admitly.com.ng
       - key: MEILISEARCH_HOST
         value: https://admitly-search.onrender.com
       - key: MEILISEARCH_API_KEY
