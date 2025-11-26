@@ -2,15 +2,14 @@
 
 # Scraping Framework
 scrapy==2.11.0
-playwright==1.41.0
 
 # HTTP & Parsing
 beautifulsoup4==4.12.2
-lxml==5.1.0
+lxml==5.3.0
 html5lib==1.1
 
 # Data Processing
-pandas==2.1.4
+pandas==2.2.3
 python-dateutil==2.8.2
 
 # Database
@@ -23,17 +22,16 @@ rq==1.15.1
 
 # Configuration
 python-dotenv==1.0.0
-pyyaml==6.0.1
+pyyaml==6.0.2
 
 # Utilities
 fake-useragent==1.4.0
 w3lib==2.1.2
 python-slugify==8.0.1
-pydantic==2.5.3
+pydantic==2.10.6
 
 # Development & Testing
 pytest==7.4.4
-scrapy-playwright==0.0.32
 
 # Code Quality
 black==24.1.1

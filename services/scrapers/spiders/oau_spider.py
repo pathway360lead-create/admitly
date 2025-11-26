@@ -9,8 +9,8 @@ from typing import Generator, Optional
 from scrapy.http import Response
 from datetime import datetime
 
-from .base_spider import BaseSpider, InstitutionSpiderMixin
-from ..items.models import InstitutionItem, ProgramItem, InstitutionType
+from spiders.base_spider import BaseSpider, InstitutionSpiderMixin
+from items.models import InstitutionItem, ProgramItem, InstitutionType
 
 
 class OauSpider(BaseSpider, InstitutionSpiderMixin):

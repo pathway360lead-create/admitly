@@ -11,7 +11,7 @@ from pydantic import ValidationError
 from typing import Any, Dict
 import logging
 
-from ..items.models import (
+from items.models import (
     InstitutionItem,
     ProgramItem,
     ApplicationWindowItem,

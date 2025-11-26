@@ -1,27 +1,38 @@
 # Render Blueprint for Admitly Platform
 # https://render.com/docs/blueprint-spec
+# Version: 1.0
+# Last Updated: November 25, 2025
 
 services:
-  # FastAPI Backend
+  # ============================================
+  # BACKEND API - FastAPI Application
+  # ============================================
   - type: web
     name: admitly-api
     env: python
-    region: oregon
-    plan: standard
+    region: frankfurt  # Closest to Nigeria
+    plan: free  # Free tier for MVP
     buildCommand: "cd services/api && pip install -r requirements.txt"
     startCommand: "cd services/api && uvicorn main:app --host 0.0.0.0 --port $PORT"
-    healthCheckPath: /health
+    healthCheckPath: /api/v1/health
+    autoDeploy: true
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: 3.13.1
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_KEY
         sync: false
       - key: SUPABASE_SERVICE_KEY
         sync: false
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
+      - key: CORS_ORIGINS
+        value: https://admitly.onrender.com,https://admitly.com.ng
       - key: MEILISEARCH_HOST
-        sync: false
+        value: https://admitly-search.onrender.com
       - key: MEILISEARCH_API_KEY
         sync: false
       - key: REDIS_URL
@@ -35,54 +46,81 @@ services:
       - key: SENTRY_DSN
         sync: false
 
-  # Background Workers (Scrapers)
-  - type: worker
-    name: admitly-scrapers
-    env: python
-    region: oregon
-    plan: standard
-    buildCommand: "cd services/scrapers && pip install -r requirements.txt"
-    startCommand: "cd services/scrapers && python worker.py"
+  # ============================================
+  # MEILISEARCH - Search Engine
+  # ============================================
+  - type: web
+    name: admitly-search
+    env: docker
+    region: frankfurt
+    plan: free
+    dockerfilePath: ./services/meilisearch/Dockerfile
+    dockerContext: ./services/meilisearch
+    disk:
+      name: meilisearch-data
+      mountPath: /meili_data
+      sizeGB: 1
+    healthCheckPath: /health
+    autoDeploy: true
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.0
-      - key: SUPABASE_URL
-        sync: false
-      - key: SUPABASE_SERVICE_KEY
-        sync: false
-      - key: REDIS_URL
-        sync: false
+      - key: MEILI_MASTER_KEY
+        generateValue: true
+      - key: MEILI_ENV
+        value: production
+      - key: MEILI_HTTP_ADDR
+        value: 0.0.0.0:$PORT
+      - key: MEILI_DB_PATH
+        value: /meili_data
 
-  # Web Frontend
+  # ============================================
+  # FRONTEND - React Web Application
+  # ============================================
   - type: web
     name: admitly-web
     env: static
+    region: frankfurt
+    plan: free
     buildCommand: "cd apps/web && pnpm install && pnpm build"
     staticPublishPath: apps/web/dist
+    pullRequestPreviewsEnabled: true
+    autoDeploy: true
     headers:
       - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /assets/*
         name: Cache-Control
         value: public, max-age=31536000, immutable
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
     envVars:
       - key: VITE_SUPABASE_URL
         sync: false
       - key: VITE_SUPABASE_ANON_KEY
         sync: false
       - key: VITE_API_URL
-        sync: false
+        value: https://admitly-api.onrender.com
       - key: VITE_MEILISEARCH_HOST
-        sync: false
+        value: https://admitly-search.onrender.com
 
-  # Admin Portal
-  - type: web
-    name: admitly-admin
-    env: static
-    buildCommand: "cd apps/admin && pnpm install && pnpm build"
-    staticPublishPath: apps/admin/dist
-    envVars:
-      - key: VITE_SUPABASE_URL
-        sync: false
-      - key: VITE_SUPABASE_ANON_KEY
-        sync: false
-      - key: VITE_API_URL
-        sync: false
+# ============================================
+# NOTES
+# ============================================
+# Database: Hosted on Supabase (external)
+# - Postgres with RLS
+# - Auth service
+# - Storage
+# - Real-time subscriptions
+#
+# Custom Domains (configure after deployment):
+# - api.admitly.com.ng → admitly-api
+# - admitly.com.ng → admitly-web
+# - www.admitly.com.ng → admitly-web
