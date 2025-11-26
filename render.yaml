@@ -73,7 +73,7 @@ services:
   - type: web
     name: admitly-web
     env: static
-    buildCommand: "pnpm install && cd apps/web && vite build"
+    buildCommand: "pnpm install && cd apps/web && pnpm vite build"
     staticPublishPath: apps/web/dist
     pullRequestPreviewsEnabled: true
     autoDeploy: true
