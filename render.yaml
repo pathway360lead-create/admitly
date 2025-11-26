@@ -10,7 +10,6 @@ services:
   - type: web
     name: admitly-api
     env: python
-    region: frankfurt  # Closest to Nigeria
     plan: free  # Free tier for MVP
     buildCommand: "cd services/api && pip install -r requirements.txt"
     startCommand: "cd services/api && uvicorn main:app --host 0.0.0.0 --port $PORT"
@@ -54,7 +53,6 @@ services:
   - type: web
     name: admitly-search
     env: docker
-    region: frankfurt
     plan: free
     dockerfilePath: ./services/meilisearch/Dockerfile
     dockerContext: ./services/meilisearch
