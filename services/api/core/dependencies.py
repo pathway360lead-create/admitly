@@ -84,3 +84,14 @@ def get_bookmark_service(
     # Extract user ID from Supabase auth user object
     user_id = current_user.user.id
     return BookmarkService(supabase, user_id)
+
+
+def get_saved_search_service(
+    supabase: Client = Depends(get_supabase),
+    current_user = Depends(get_current_user),
+):
+    """Get saved search service instance"""
+    from services.saved_search_service import SavedSearchService
+    # Extract user ID from Supabase auth user object
+    user_id = current_user.user.id
+    return SavedSearchService(supabase, user_id)

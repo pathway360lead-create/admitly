@@ -71,12 +71,14 @@ from routers.institutions import router as institutions_router
 from routers.programs import router as programs_router
 from routers.search import router as search_router
 from routers.bookmarks import router as bookmarks_router
+from routers.saved_searches import router as saved_searches_router
 
 app.include_router(auth_router, prefix="/api/v1", tags=["auth"])
 app.include_router(institutions_router, prefix="/api/v1")
 app.include_router(programs_router, prefix="/api/v1")
 app.include_router(search_router)
 app.include_router(bookmarks_router, prefix="/api/v1")
+app.include_router(saved_searches_router, prefix="/api/v1")
 
 
 if __name__ == "__main__":
