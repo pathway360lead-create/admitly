@@ -95,3 +95,15 @@ def get_saved_search_service(
     # Extract user ID from Supabase auth user object
     user_id = current_user.user.id
     return SavedSearchService(supabase, user_id)
+
+
+def get_user_profile_service(
+    supabase: Client = Depends(get_supabase),
+    current_user = Depends(get_current_user),
+):
+    """Get user profile service instance"""
+    from services.user_profile_service import UserProfileService
+    # Extract user ID and email from Supabase auth user object
+    user_id = current_user.user.id
+    user_email = current_user.user.email
+    return UserProfileService(supabase, user_id, user_email)
