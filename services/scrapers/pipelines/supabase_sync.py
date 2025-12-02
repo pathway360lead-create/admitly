@@ -311,7 +311,13 @@ class SupabaseSyncPipeline:
 
     def _find_institution_id(self, institution_name: str) -> Optional[str]:
         """
-        Find institution ID by name.
+        Find institution ID by name with multiple matching strategies.
+
+        Tries in order:
+        1. Exact name match
+        2. Case-insensitive name match
+        3. Short name match
+        4. Partial name match (contains)
 
         Args:
             institution_name: Name of institution
@@ -320,18 +326,61 @@ class SupabaseSyncPipeline:
             Institution UUID or None
         """
         try:
+            # Strategy 1: Exact name match
             result = self.supabase.table('institutions')\
-                .select('id')\
+                .select('id, name')\
                 .eq('name', institution_name)\
                 .is_('deleted_at', 'null')\
                 .execute()
 
             if result.data:
+                self.logger.debug(f"Found institution by exact match: {institution_name}")
                 return result.data[0]['id']
+
+            # Strategy 2: Case-insensitive match by fetching all and comparing
+            all_institutions = self.supabase.table('institutions')\
+                .select('id, name, short_name')\
+                .is_('deleted_at', 'null')\
+                .execute()
+
+            institution_name_lower = institution_name.lower()
+
+            # Try case-insensitive name match
+            for inst in all_institutions.data:
+                if inst['name'].lower() == institution_name_lower:
+                    self.logger.info(
+                        f"Found institution by case-insensitive match: "
+                        f"{institution_name} -> {inst['name']}"
+                    )
+                    return inst['id']
+
+            # Strategy 3: Short name match
+            for inst in all_institutions.data:
+                if inst.get('short_name') and inst['short_name'].lower() == institution_name_lower:
+                    self.logger.info(
+                        f"Found institution by short name: "
+                        f"{institution_name} -> {inst['name']}"
+                    )
+                    return inst['id']
+
+            # Strategy 4: Partial match (contains)
+            for inst in all_institutions.data:
+                if institution_name_lower in inst['name'].lower():
+                    self.logger.info(
+                        f"Found institution by partial match: "
+                        f"{institution_name} -> {inst['name']}"
+                    )
+                    return inst['id']
+
+            # No match found
+            self.logger.warning(
+                f"Institution not found with any strategy: {institution_name}. "
+                f"Available institutions: {[inst['name'] for inst in all_institutions.data[:5]]}"
+            )
             return None
 
         except Exception as e:
-            self.logger.error(f"Error finding institution ID: {e}")
+            self.logger.error(f"Error finding institution ID for '{institution_name}': {e}")
             return None
 
     def _find_existing_program(
@@ -513,6 +562,7 @@ class SupabaseSyncPipeline:
             spider: Spider being closed
         """
         total = self.items_inserted + self.items_updated + self.items_failed
+        success_rate = ((total - self.items_failed) / total * 100) if total > 0 else 0.0
 
         self.logger.info(
             f"\n{'='*70}\n"
@@ -521,6 +571,6 @@ class SupabaseSyncPipeline:
             f"Inserted: {self.items_inserted}\n"
             f"Updated: {self.items_updated}\n"
             f"Failed: {self.items_failed}\n"
-            f"Success Rate: {((total - self.items_failed) / total * 100):.1f}%\n"
+            f"Success Rate: {success_rate:.1f}%\n"
             f"{'='*70}"
         )

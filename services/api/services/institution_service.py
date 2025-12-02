@@ -151,18 +151,18 @@ class InstitutionService:
                 .eq('slug', slug)
                 .eq('status', 'published')
                 .is_('deleted_at', 'null')
-                .maybe_single()
                 .execute()
             )
 
-            if not response.data:
+            # response.data will be [] if no match, or [institution_dict] if match
+            if not response.data or len(response.data) == 0:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
                     detail=f"Institution with slug '{slug}' not found"
                 )
 
             # Add program_count (optimized: use count='exact' for single query)
-            institution_data = response.data
+            institution_data = response.data[0]  # Get first (and only) item from list
             program_count_response = (
                 self.supabase.table('programs')
                 .select('*', count='exact')
@@ -213,17 +213,17 @@ class InstitutionService:
                 .eq('slug', slug)
                 .eq('status', 'published')
                 .is_('deleted_at', 'null')
-                .maybe_single()
                 .execute()
             )
 
-            if not institution_response.data:
+            # institution_response.data will be [] if no match, or [institution_dict] if match
+            if not institution_response.data or len(institution_response.data) == 0:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
                     detail=f"Institution with slug '{slug}' not found"
                 )
 
-            institution_id = institution_response.data['id']
+            institution_id = institution_response.data[0]['id']  # Get first (and only) item from list
 
             # Query programs
             query = self.supabase.table('programs').select('*', count='exact')

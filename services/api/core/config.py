@@ -47,6 +47,9 @@ class Settings(BaseSettings):
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:3000",
+        "https://admitly-web.onrender.com",
+        "https://admitly.com.ng",
+        "https://www.admitly.com.ng",
     ]
 
     @field_validator('CORS_ORIGINS', mode='before')

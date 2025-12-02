@@ -175,18 +175,18 @@ class ProgramService:
                 .eq('id', program_id)
                 .eq('status', 'published')
                 .is_('deleted_at', 'null')
-                .maybe_single()
                 .execute()
             )
 
-            if not response.data:
+            # response.data will be [] if no match, or [program_dict] if match
+            if not response.data or len(response.data) == 0:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
                     detail=f"Program with ID '{program_id}' not found"
                 )
 
             # Transform data to include institution fields
-            program_data = response.data
+            program_data = response.data[0]  # Get first (and only) item from list
             institution_data = program_data.get('institution', {})
             program_dict = {
                 **program_data,
