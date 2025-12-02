@@ -73,3 +73,14 @@ def get_search_service(
     """Get search service instance"""
     from services.search_service import SearchService
     return SearchService(meilisearch_client)
+
+
+def get_bookmark_service(
+    supabase: Client = Depends(get_supabase),
+    current_user = Depends(get_current_user),
+):
+    """Get bookmark service instance"""
+    from services.bookmark_service import BookmarkService
+    # Extract user ID from Supabase auth user object
+    user_id = current_user.user.id
+    return BookmarkService(supabase, user_id)
