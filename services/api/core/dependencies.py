@@ -107,3 +107,14 @@ def get_user_profile_service(
     user_id = current_user.user.id
     user_email = current_user.user.email
     return UserProfileService(supabase, user_id, user_email)
+
+
+def get_search_history_service(
+    supabase: Client = Depends(get_supabase),
+    current_user = Depends(get_current_user),
+):
+    """Get search history service instance"""
+    from services.search_history_service import SearchHistoryService
+    # Extract user ID from Supabase auth user object
+    user_id = current_user.user.id
+    return SearchHistoryService(supabase, user_id)
