@@ -30,11 +30,14 @@ export default defineConfig({
     },
   },
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       '@': path.resolve(__dirname, './apps/web/src'),
       '@admitly/ui': path.resolve(__dirname, './packages/ui/src'),
       '@admitly/types': path.resolve(__dirname, './packages/types/src'),
       '@admitly/api-client': path.resolve(__dirname, './packages/api-client/src'),
+      'react': path.resolve(__dirname, './apps/web/node_modules/react'),
+      'react-dom': path.resolve(__dirname, './apps/web/node_modules/react-dom'),
     },
   },
 });

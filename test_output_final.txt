@@ -1,0 +1,1046 @@
+﻿
+> admitly@1.0.0 test
+> vitest apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx
+
+
+[7m[1m[34m DEV [39m[22m[27m [34mv1.6.1[39m [90mC:/Users/MY PC/Web Project/scholardata[39m
+
+ [33mΓ¥»[39m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx [2m ([22m[2m5 tests[22m [2m|[22m [31m5 failed[39m[2m)[22m[90m 104[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx[2m > [22mUserProfileForm[2m > [22mrenders with initial data[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx[2m > [22mUserProfileForm[2m > [22mvalidates required fields[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx[2m > [22mUserProfileForm[2m > [22mcalls updateProfile mutation on submission[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx[2m > [22mUserProfileForm[2m > [22mcalls updatePreferences mutation on submission[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx[2m > [22mUserProfileForm[2m > [22mshows loading state[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m5 failed[39m[22m[90m (5)[39m
+[2m   Start at [22m 18:47:57
+[2m   Duration [22m 13.69s[2m (transform 2.48s, setup 3.40s, collect 5.00s, tests 104ms, environment 1.93s, prepare 1.19s)[22m
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/repro.test.tsx[22m [34mx1[39m
+
+ [33mΓ¥»[39m apps/web/src/repro.test.tsx [2m ([22m[2m3 tests[22m [2m|[22m [31m3 failed[39m[2m)[22m[33m 533[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/repro.test.tsx[2m > [22mRepro[2m > [22mrenders simple div[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/repro.test.tsx[2m > [22mRepro[2m > [22mrenders Loader2[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/repro.test.tsx[2m > [22mRepro[2m > [22mrenders Card[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[90m (3)[39m
+[2m   Start at [22m 18:48:56
+[2m   Duration [22m 23.41s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x1[39m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/repro.test.tsx[22m [34mx2[39m
+
+ [33mΓ¥»[39m apps/web/src/repro.test.tsx [2m ([22m[2m3 tests[22m [2m|[22m [31m3 failed[39m[2m)[22m[90m 164[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/repro.test.tsx[2m > [22mRepro[2m > [22mrenders simple div[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/repro.test.tsx[2m > [22mRepro[2m > [22mrenders Loader2[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/repro.test.tsx[2m > [22mRepro[2m > [22mrenders Card[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[90m (3)[39m
+[2m   Start at [22m 18:49:30
+[2m   Duration [22m 7.00s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x2[39m
+[2K[1A[2K[G       [90mrerun x2[39m
+[2K[1A[2K[G       [2m[90mrerun x2[39m[22m
+[2K[1A[2K[G[1m[35m
+Restarting due to config changes...[39m[22m
+[1m[35m
+Restarting due to config changes...[39m[22m
+
+[7m[1m[34m DEV [39m[22m[27m [34mv1.6.1[39m [90mC:/Users/MY PC/Web Project/scholardata[39m
+
+ [33mΓ¥»[39m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx [2m ([22m[2m5 tests[22m [2m|[22m [31m5 failed[39m[2m)[22m[90m 193[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx[2m > [22mUserProfileForm[2m > [22mrenders with initial data[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx[2m > [22mUserProfileForm[2m > [22mvalidates required fields[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx[2m > [22mUserProfileForm[2m > [22mcalls updateProfile mutation on submission[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx[2m > [22mUserProfileForm[2m > [22mcalls updatePreferences mutation on submission[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+[31m   [33mΓ¥»[31m apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx[2m > [22mUserProfileForm[2m > [22mshows loading state[39m
+[31m     ΓåÆ Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m5 failed[39m[22m[90m (5)[39m
+[2m   Start at [22m 18:51:41
+[2m   Duration [22m 29.12s[2m (transform 0ms, setup 10.39s, collect 7.42s, tests 193ms, environment 5.96s, prepare 2.73s)[22m
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/pages/SearchPage.test.tsx[22m [34mx1[39m
+
+ [32mΓ£ô[39m apps/web/src/pages/SearchPage.test.tsx [2m ([22m[2m6 tests[22m[2m)[22m[33m 1299[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 19:18:50
+[2m   Duration [22m 29.83s
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x1[39m
+[2K[1A[2K[G       [90mrerun x1[39m
+[2K[1A[2K[G       [2m[90mrerun x1[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/pages/SearchPage.tsx[22m [34mx2[39m
+
+ [33mΓ¥»[39m apps/web/src/pages/SearchPage.test.tsx [2m ([22m[2m6 tests[22m [2m|[22m [31m6 failed[39m[2m)[22m[33m 1527[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mrenders loading state[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mrenders error state[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mrenders empty state[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mrenders search results[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mupdates search query on input change[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mtriggers search on form submit[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m6 failed[39m[22m[90m (6)[39m
+[2m   Start at [22m 19:23:55
+[2m   Duration [22m 16.62s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x2[39m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/components/organisms/SearchFilters/ActiveFilters.test.tsx[22m [34mx1[39m
+
+ [33mΓ¥»[39m apps/web/src/components/organisms/SearchFilters/ActiveFilters.test.tsx [2m ([22m[2m5 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[33m 853[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/components/organisms/SearchFilters/ActiveFilters.test.tsx[2m > [22mActiveFilters[2m > [22mcalls clearFilter when chip remove button is clicked[39m
+[31m     ΓåÆ Unable to find a label with the text of: Remove filter State: Lagos
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"flex flex-wrap items-center gap-2 "[31m
+    [36m>[31m
+      [36m<span[31m
+        [33mclass[31m=[32m"text-sm text-muted-foreground mr-2"[31m
+      [36m>[31m
+        [0mActive Filters:[0m
+      [36m</span>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"rounded-full border text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 flex items-center gap-1 px-2 py-1"[31m
+      [36m>[31m
+        [0mState: Lagos[0m
+        [36m<button[31m
+          [33maria-label[31m=[32m"Remove filter Lagos"[31m
+          [33mclass[31m=[32m"ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"[31m
+        [36m>[31m
+          [36m<svg[31m
+            [33mclass[31m=[32m"lucide lucide-x h-3 w-3"[31m
+            [33mfill[31m=[32m"none"[31m
+            [33mheight[31m=[32m"24"[31m
+            [33mstroke[31m=[32m"currentColor"[31m
+            [33mstroke-linecap[31m=[32m"round"[31m
+            [33mstroke-linejoin[31m=[32m"round"[31m
+            [33mstroke-width[31m=[32m"2"[31m
+            [33mviewBox[31m=[32m"0 0 24 24"[31m
+            [33mwidth[31m=[32m"24"[31m
+            [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+          [36m>[31m
+            [36m<path[31m
+              [33md[31m=[32m"M18 6 6 18"[31m
+            [36m/>[31m
+            [36m<path[31m
+              [33md[31m=[32m"m6 6 12 12"[31m
+            [36m/>[31m
+          [36m</svg>[31m
+        [36m</button>[31m
+      [36m</div>[31m
+      [36m<button[31m
+        [33mclass[31m=[32m"inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 text-xs ml-auto"[31m
+      [36m>[31m
+        [0mClear All[0m
+      [36m</button>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m4 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 19:24:24
+[2m   Duration [22m 19.36s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x1[39m
+[2K[1A[2K[G       [90mrerun x1[39m
+[2K[1A[2K[G       [2m[90mrerun x1[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/components/organisms/SearchFilters/ActiveFilters.tsx[22m [34mx2[39m
+
+ [33mΓ¥»[39m apps/web/src/components/organisms/SearchFilters/ActiveFilters.test.tsx [2m ([22m[2m0 test[22m[2m)[22m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 19:27:49
+[2m   Duration [22m 7.03s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x2[39m
+[2K[1A[2K[G       [90mrerun x2[39m
+[2K[1A[2K[G       [2m[90mrerun x2[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/components/organisms/SearchFilters/ActiveFilters.tsx[22m [34mx3[39m
+
+ [32mΓ£ô[39m apps/web/src/components/organisms/SearchFilters/ActiveFilters.test.tsx [2m ([22m[2m5 tests[22m[2m)[22m[33m 899[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 19:29:46
+[2m   Duration [22m 45.06s
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x3[39m
+[2K[1A[2K[G       [90mrerun x3[39m
+[2K[1A[2K[G       [2m[90mrerun x3[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/pages/InstitutionsPage.test.tsx[22m [34mx1[39m
+
+ [33mΓ¥»[39m apps/web/src/pages/InstitutionsPage.test.tsx [2m ([22m[2m6 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[33m 1339[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/InstitutionsPage.test.tsx[2m > [22mInstitutionsPage[2m > [22mhandles pagination[39m
+[31m     ΓåÆ Unable to find an element with the text: Next. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"min-h-screen py-8"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"container mx-auto px-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-8"[31m
+        [36m>[31m
+          [36m<h1[31m
+            [33mclass[31m=[32m"text-4xl font-bold mb-2"[31m
+          [36m>[31m
+            [0mInstitutions[0m
+          [36m</h1>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-muted-foreground"[31m
+          [36m>[31m
+            [0mBrowse and compare [0m
+            [0m30[0m
+            [0m verified educational institutions across Nigeria[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-6"[31m
+        [36m>[31m
+          [36m<input[31m
+            [33mdata-testid[31m=[32m"search-bar"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"grid grid-cols-1 lg:grid-cols-4 gap-6"[31m
+        [36m>[31m
+          [36m<aside[31m
+            [33mclass[31m=[32m"hidden lg:block lg:col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"sticky top-4"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mdata-testid[31m=[32m"search-filters"[31m
+              [36m>[31m
+                [0mFilters[0m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</aside>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"lg:hidden col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"search-filters"[31m
+            [36m>[31m
+              [0mFilters[0m
+            [36m</div>[31m
+          [36m</div>[31m
+          [36m<main[31m
+            [33mclass[31m=[32m"lg:col-span-3"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"active-filters"[31m
+            [36m>[31m
+              [0mActive Filters[0m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"mb-6"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mShowing [0m
+                [0m0[0m
+                [0m [0m
+                [0mof 30[0m
+                [0m institutions[0m
+                [0m (Page 1 of 2)[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"text-center py-12"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-lg text-muted-foreground mb-4"[31m
+              [36m>[31m
+                [0mNo institutions found[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground mb-6"[31m
+              [36m>[31m
+                [0mTry adjusting your filters or search query[0m
+              [36m</p>[31m
+            [36m</div>[31m
+          [36m</main>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m5 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 19:38:02
+[2m   Duration [22m 20.38s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x1[39m
+[2K[1A[2K[G       [90mrerun x1[39m
+[2K[1A[2K[G       [2m[90mrerun x1[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/pages/InstitutionsPage.test.tsx[22m [34mx2[39m
+
+ [33mΓ¥»[39m apps/web/src/pages/InstitutionsPage.test.tsx [2m ([22m[2m0 test[22m[2m)[22m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 19:41:32
+[2m   Duration [22m 8.24s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x2[39m
+[2K[1A[2K[G       [90mrerun x2[39m
+[2K[1A[2K[G       [2m[90mrerun x2[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/pages/InstitutionsPage.test.tsx[22m [34mx3[39m
+
+ [33mΓ¥»[39m apps/web/src/pages/InstitutionsPage.test.tsx [2m ([22m[2m6 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[33m 3526[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/InstitutionsPage.test.tsx[2m > [22mInstitutionsPage[2m > [22mhandles pagination[39m
+[31m     ΓåÆ Unable to find an element with the text: Next. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"min-h-screen py-8"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"container mx-auto px-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-8"[31m
+        [36m>[31m
+          [36m<h1[31m
+            [33mclass[31m=[32m"text-4xl font-bold mb-2"[31m
+          [36m>[31m
+            [0mInstitutions[0m
+          [36m</h1>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-muted-foreground"[31m
+          [36m>[31m
+            [0mBrowse and compare [0m
+            [0m30[0m
+            [0m verified educational institutions across Nigeria[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-6"[31m
+        [36m>[31m
+          [36m<input[31m
+            [33mdata-testid[31m=[32m"search-bar"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"grid grid-cols-1 lg:grid-cols-4 gap-6"[31m
+        [36m>[31m
+          [36m<aside[31m
+            [33mclass[31m=[32m"hidden lg:block lg:col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"sticky top-4"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mdata-testid[31m=[32m"search-filters"[31m
+              [36m>[31m
+                [0mFilters[0m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</aside>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"lg:hidden col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"search-filters"[31m
+            [36m>[31m
+              [0mFilters[0m
+            [36m</div>[31m
+          [36m</div>[31m
+          [36m<main[31m
+            [33mclass[31m=[32m"lg:col-span-3"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"active-filters"[31m
+            [36m>[31m
+              [0mActive Filters[0m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"mb-6"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mShowing [0m
+                [0m0[0m
+                [0m [0m
+                [0mof 30[0m
+                [0m institutions[0m
+                [0m (Page 1 of 2)[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"text-center py-12"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-lg text-muted-foreground mb-4"[31m
+              [36m>[31m
+                [0mNo institutions found[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground mb-6"[31m
+              [36m>[31m
+                [0mTry adjusting your filters or search query[0m
+              [36m</p>[31m
+            [36m</div>[31m
+          [36m</main>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m5 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 19:42:01
+[2m   Duration [22m 30.88s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x3[39m
+[2K[1A[2K[G       [90mrerun x3[39m
+[2K[1A[2K[G       [2m[90mrerun x3[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/components/organisms/SearchFilters/index.ts[22m
+
+ [33mΓ¥»[39m apps/web/src/pages/SearchPage.test.tsx [2m ([22m[2m6 tests[22m [2m|[22m [31m6 failed[39m[2m)[22m[33m 1742[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mrenders loading state[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mrenders error state[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mrenders empty state[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mrenders search results[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mupdates search query on input change[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/SearchPage.test.tsx[2m > [22mSearchPage[2m > [22mtriggers search on form submit[39m
+[31m     ΓåÆ [vitest] No "ActiveFilters" export is defined on the "@/components/organisms/SearchFilters" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m
+ [33mΓ¥»[39m apps/web/src/pages/InstitutionsPage.test.tsx [2m ([22m[2m6 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[33m 2313[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/InstitutionsPage.test.tsx[2m > [22mInstitutionsPage[2m > [22mhandles pagination[39m
+[31m     ΓåÆ Unable to find an element with the text: Next. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"min-h-screen py-8"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"container mx-auto px-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-8"[31m
+        [36m>[31m
+          [36m<h1[31m
+            [33mclass[31m=[32m"text-4xl font-bold mb-2"[31m
+          [36m>[31m
+            [0mInstitutions[0m
+          [36m</h1>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-muted-foreground"[31m
+          [36m>[31m
+            [0mBrowse and compare [0m
+            [0m30[0m
+            [0m verified educational institutions across Nigeria[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-6"[31m
+        [36m>[31m
+          [36m<input[31m
+            [33mdata-testid[31m=[32m"search-bar"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"grid grid-cols-1 lg:grid-cols-4 gap-6"[31m
+        [36m>[31m
+          [36m<aside[31m
+            [33mclass[31m=[32m"hidden lg:block lg:col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"sticky top-4"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mdata-testid[31m=[32m"search-filters"[31m
+              [36m>[31m
+                [0mFilters[0m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</aside>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"lg:hidden col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"search-filters"[31m
+            [36m>[31m
+              [0mFilters[0m
+            [36m</div>[31m
+          [36m</div>[31m
+          [36m<main[31m
+            [33mclass[31m=[32m"lg:col-span-3"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"active-filters"[31m
+            [36m>[31m
+              [0mActive Filters[0m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"mb-6"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mShowing [0m
+                [0m0[0m
+                [0m [0m
+                [0mof 30[0m
+                [0m institutions[0m
+                [0m (Page 1 of 2)[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"text-center py-12"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-lg text-muted-foreground mb-4"[31m
+              [36m>[31m
+                [0mNo institutions found[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground mb-6"[31m
+              [36m>[31m
+                [0mTry adjusting your filters or search query[0m
+              [36m</p>[31m
+            [36m</div>[31m
+          [36m</main>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+
+[2m Test Files [22m [1m[31m2 failed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[31m7 failed[39m[22m[2m | [22m[1m[32m5 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 19:47:32
+[2m   Duration [22m 114.71s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/pages/ProgramsPage.test.tsx[22m [34mx1[39m
+
+ [33mΓ¥»[39m apps/web/src/pages/ProgramsPage.test.tsx [2m ([22m[2m6 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[33m 1594[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/ProgramsPage.test.tsx[2m > [22mProgramsPage[2m > [22mhandles pagination[39m
+[31m     ΓåÆ Unable to find an element with the text: Next. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"min-h-screen py-8"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"container mx-auto px-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-8"[31m
+        [36m>[31m
+          [36m<h1[31m
+            [33mclass[31m=[32m"text-4xl font-bold mb-2"[31m
+          [36m>[31m
+            [0mPrograms[0m
+          [36m</h1>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-muted-foreground"[31m
+          [36m>[31m
+            [0mExplore [0m
+            [0m30[0m
+            [0m academic programs across Nigerian institutions[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-6"[31m
+        [36m>[31m
+          [36m<input[31m
+            [33mdata-testid[31m=[32m"search-bar"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"grid grid-cols-1 lg:grid-cols-4 gap-6"[31m
+        [36m>[31m
+          [36m<aside[31m
+            [33mclass[31m=[32m"hidden lg:block lg:col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"sticky top-4"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mdata-testid[31m=[32m"search-filters"[31m
+              [36m>[31m
+                [0mFilters[0m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</aside>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"lg:hidden col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"search-filters"[31m
+            [36m>[31m
+              [0mFilters[0m
+            [36m</div>[31m
+          [36m</div>[31m
+          [36m<main[31m
+            [33mclass[31m=[32m"lg:col-span-3"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"active-filters"[31m
+            [36m>[31m
+              [0mActive Filters[0m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"mb-6"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mShowing [0m
+                [0m0[0m
+                [0m [0m
+                [0mof 30[0m
+                [0m programs[0m
+                [0m (Page 1 of 2)[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"text-center py-12"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-lg text-muted-foreground mb-4"[31m
+              [36m>[31m
+                [0mNo programs found[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground mb-6"[31m
+              [36m>[31m
+                [0mTry adjusting your filters or search query[0m
+              [36m</p>[31m
+            [36m</div>[31m
+          [36m</main>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m5 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 19:48:47
+[2m   Duration [22m 30.36s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x1[39m
+[2K[1A[2K[G       [90mrerun x1[39m
+[2K[1A[2K[G       [2m[90mrerun x1[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/pages/ProgramsPage.test.tsx[22m [34mx2[39m
+
+ [33mΓ¥»[39m apps/web/src/pages/ProgramsPage.test.tsx [2m ([22m[2m6 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[33m 1418[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/ProgramsPage.test.tsx[2m > [22mProgramsPage[2m > [22mhandles pagination[39m
+[31m     ΓåÆ Unable to find an element with the text: Next. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"min-h-screen py-8"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"container mx-auto px-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-8"[31m
+        [36m>[31m
+          [36m<h1[31m
+            [33mclass[31m=[32m"text-4xl font-bold mb-2"[31m
+          [36m>[31m
+            [0mPrograms[0m
+          [36m</h1>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-muted-foreground"[31m
+          [36m>[31m
+            [0mExplore [0m
+            [0m30[0m
+            [0m academic programs across Nigerian institutions[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-6"[31m
+        [36m>[31m
+          [36m<input[31m
+            [33mdata-testid[31m=[32m"search-bar"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"grid grid-cols-1 lg:grid-cols-4 gap-6"[31m
+        [36m>[31m
+          [36m<aside[31m
+            [33mclass[31m=[32m"hidden lg:block lg:col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"sticky top-4"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mdata-testid[31m=[32m"search-filters"[31m
+              [36m>[31m
+                [0mFilters[0m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</aside>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"lg:hidden col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"search-filters"[31m
+            [36m>[31m
+              [0mFilters[0m
+            [36m</div>[31m
+          [36m</div>[31m
+          [36m<main[31m
+            [33mclass[31m=[32m"lg:col-span-3"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"active-filters"[31m
+            [36m>[31m
+              [0mActive Filters[0m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"mb-6"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mShowing [0m
+                [0m0[0m
+                [0m [0m
+                [0mof 30[0m
+                [0m programs[0m
+                [0m (Page 1 of 2)[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"text-center py-12"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-lg text-muted-foreground mb-4"[31m
+              [36m>[31m
+                [0mNo programs found[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground mb-6"[31m
+              [36m>[31m
+                [0mTry adjusting your filters or search query[0m
+              [36m</p>[31m
+            [36m</div>[31m
+          [36m</main>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m5 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 19:53:50
+[2m   Duration [22m 25.45s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x2[39m
+[2K[1A[2K[G       [90mrerun x2[39m
+[2K[1A[2K[G       [2m[90mrerun x2[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/pages/ProgramsPage.test.tsx[22m [34mx3[39m
+
+ [33mΓ¥»[39m apps/web/src/pages/ProgramsPage.test.tsx [2m ([22m[2m0 test[22m[2m)[22m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 19:55:48
+[2m   Duration [22m 11.80s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x3[39m
+[2K[1A[2K[G       [90mrerun x3[39m
+[2K[1A[2K[G       [2m[90mrerun x3[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m apps/web/src/pages/ProgramsPage.test.tsx[22m [34mx4[39m
+
+ [33mΓ¥»[39m apps/web/src/pages/ProgramsPage.test.tsx [2m ([22m[2m6 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[33m 3577[2mms[22m[39m
+[31m   [33mΓ¥»[31m apps/web/src/pages/ProgramsPage.test.tsx[2m > [22mProgramsPage[2m > [22mhandles pagination[39m
+[31m     ΓåÆ Unable to find an accessible element with the role "button" and name `/next/i`
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "Programs":
+  [36m<h1[31m
+    [33mclass[31m=[32m"text-4xl font-bold mb-2"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "":
+  [36m<input[31m
+    [33mdata-testid[31m=[32m"search-bar"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  complementary:
+
+  Name "":
+  [36m<aside[31m
+    [33mclass[31m=[32m"hidden lg:block lg:col-span-1"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[31m
+    [33mclass[31m=[32m"lg:col-span-3"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"min-h-screen py-8"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"container mx-auto px-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-8"[31m
+        [36m>[31m
+          [36m<h1[31m
+            [33mclass[31m=[32m"text-4xl font-bold mb-2"[31m
+          [36m>[31m
+            [0mPrograms[0m
+          [36m</h1>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-muted-foreground"[31m
+          [36m>[31m
+            [0mExplore [0m
+            [0m30[0m
+            [0m academic programs across Nigerian institutions[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mb-6"[31m
+        [36m>[31m
+          [36m<input[31m
+            [33mdata-testid[31m=[32m"search-bar"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"grid grid-cols-1 lg:grid-cols-4 gap-6"[31m
+        [36m>[31m
+          [36m<aside[31m
+            [33mclass[31m=[32m"hidden lg:block lg:col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"sticky top-4"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mdata-testid[31m=[32m"search-filters"[31m
+              [36m>[31m
+                [0mFilters[0m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</aside>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"lg:hidden col-span-1"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"search-filters"[31m
+            [36m>[31m
+              [0mFilters[0m
+            [36m</div>[31m
+          [36m</div>[31m
+          [36m<main[31m
+            [33mclass[31m=[32m"lg:col-span-3"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mdata-testid[31m=[32m"active-filters"[31m
+            [36m>[31m
+              [0mActive Filters[0m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"mb-6"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mShowing [0m
+                [0m0[0m
+                [0m [0m
+                [0mof 30[0m
+                [0m programs[0m
+                [0m (Page 1 of 2)[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"text-center py-12"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-lg text-muted-foreground mb-4"[31m
+              [36m>[31m
+                [0mNo programs found[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground mb-6"[31m
+              [36m>[31m
+                [0mTry adjusting your filters or search query[0m
+              [36m</p>[31m
+            [36m</div>[31m
+          [36m</main>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m5 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 19:56:21
+[2m   Duration [22m 26.51s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x4[39m
+[2K[1A[2K[G       [90mrerun x4[39m
+[2K[1A[2K[G       [2m[90mrerun x4[39m[22m

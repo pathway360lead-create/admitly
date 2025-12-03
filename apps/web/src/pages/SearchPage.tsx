@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useSearch } from '@/hooks/api';
-import { SearchFilters } from '@/components/organisms/SearchFilters';
+import { SearchFilters, ActiveFilters } from '@/components/organisms/SearchFilters';
 import { Button } from '@admitly/ui';
 import { Search } from 'lucide-react';
 import { ProgramCard } from '@/components/molecules/ProgramCard';
@@ -158,33 +158,30 @@ export const SearchPage: FC = () => {
             <button
               data-testid="tab-all"
               onClick={() => setResultType('all')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                resultType === 'all'
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${resultType === 'all'
                   ? 'bg-primary text-white active'
                   : 'bg-white text-gray-700 hover:bg-gray-50'
-              }`}
+                }`}
             >
               All Results (<span data-testid="result-count">{totalResults}</span>)
             </button>
             <button
               data-testid="tab-programs"
               onClick={() => setResultType('programs')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                resultType === 'programs'
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${resultType === 'programs'
                   ? 'bg-primary text-white active'
                   : 'bg-white text-gray-700 hover:bg-gray-50'
-              }`}
+                }`}
             >
               Programs ({programs.length})
             </button>
             <button
               data-testid="tab-institutions"
               onClick={() => setResultType('institutions')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                resultType === 'institutions'
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${resultType === 'institutions'
                   ? 'bg-primary text-white active'
                   : 'bg-white text-gray-700 hover:bg-gray-50'
-              }`}
+                }`}
             >
               Institutions ({institutions.length})
             </button>
@@ -223,6 +220,7 @@ export const SearchPage: FC = () => {
 
           {/* Results */}
           <main className="lg:col-span-3">
+            <ActiveFilters className="mb-6" />
             {!filters.search ? (
               <div className="bg-white rounded-lg p-12 text-center">
                 <Search className="h-16 w-16 text-gray-300 mx-auto mb-4" />

@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { InstitutionCard } from '@/components/molecules/InstitutionCard';
 import { SearchBar } from '@/components/molecules/SearchBar';
-import { SearchFilters } from '@/components/organisms/SearchFilters';
+import { SearchFilters, ActiveFilters } from '@/components/organisms/SearchFilters';
 import { Button } from '@admitly/ui';
 import { useInstitutions } from '@/hooks/api';
 import { useSearchFilterStore } from '@/stores/searchFilterStore';
@@ -134,6 +134,7 @@ export const InstitutionsPage: FC = () => {
 
           {/* Results Grid */}
           <main className="lg:col-span-3">
+            <ActiveFilters className="mb-6" />
             {/* Results Count */}
             <div className="mb-6">
               <p className="text-sm text-muted-foreground">
