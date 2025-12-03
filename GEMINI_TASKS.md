@@ -355,6 +355,164 @@ When complete, update `GEMINI_WORK_REPORTS.md` with:
 
 ---
 
-**Active Tasks:** 0
+---
+
+## TASK-004: Saved Searches Components
+**Assigned:** 2025-12-02 21:00
+**Status:** 🚀 ACTIVE
+**Priority:** HIGH
+**Estimated Time:** 90 minutes
+
+### Task Description
+Implement frontend components for Saved Searches feature including SavedSearchCard, hooks, and integration.
+
+### Requirements
+1. Create SavedSearchCard component: `apps/web/src/components/molecules/SavedSearchCard/`
+2. Create useSavedSearches hook: `apps/web/src/hooks/useSavedSearches.ts`
+3. Components should:
+   - Display saved search name, query, filters
+   - Show execution count and last executed timestamp
+   - "Execute" button to run the search
+   - "Edit" button to update filters/name
+   - "Delete" button to remove saved search
+   - Notification toggle (bell icon)
+   - Loading states during API calls
+   - Accessible (ARIA labels, keyboard navigation)
+
+### API Endpoints to Use
+Base URL: `http://localhost:8000/api/v1`
+
+**List saved searches:**
+```
+GET /users/me/saved-searches?page=1&page_size=20&sort=updated_at&order=desc
+Authorization: Bearer {token}
+```
+
+**Create saved search:**
+```
+POST /users/me/saved-searches
+Authorization: Bearer {token}
+Body: {
+  "name": "Computer Science in Lagos",
+  "query": "computer science",
+  "filters": {...},
+  "notify_on_new_results": true
+}
+```
+
+**Update saved search:**
+```
+PATCH /users/me/saved-searches/{id}
+Authorization: Bearer {token}
+Body: {
+  "name": "Updated name",
+  "filters": {...},
+  "notify_on_new_results": false
+}
+```
+
+**Delete saved search:**
+```
+DELETE /users/me/saved-searches/{id}
+Authorization: Bearer {token}
+```
+
+**Execute saved search:**
+```
+POST /users/me/saved-searches/{id}/execute?page=1&page_size=20
+Authorization: Bearer {token}
+```
+
+### Component API
+```typescript
+interface SavedSearchCardProps {
+  savedSearch: SavedSearch;
+  onExecute?: (searchId: string) => void;
+  onEdit?: (searchId: string) => void;
+  onDelete?: (searchId: string) => void;
+  onToggleNotify?: (searchId: string, notify: boolean) => void;
+  className?: string;
+}
+```
+
+### Expected Files
+- `apps/web/src/components/molecules/SavedSearchCard/SavedSearchCard.tsx`
+- `apps/web/src/components/molecules/SavedSearchCard/SavedSearchCard.test.tsx`
+- `apps/web/src/components/molecules/SavedSearchCard/index.ts`
+- `apps/web/src/hooks/useSavedSearches.ts`
+
+### Acceptance Criteria
+- [ ] Component renders saved search details
+- [ ] Execute button triggers search and shows results
+- [ ] Edit/Delete buttons work correctly
+- [ ] Notification toggle updates setting
+- [ ] Loading states shown during API calls
+- [ ] Error handling with user-friendly messages
+- [ ] Accessible (keyboard + screen reader)
+- [ ] Unit tests with 80%+ coverage
+- [ ] No TypeScript errors
+- [ ] No ESLint warnings
+
+### Reference Files
+- `apps/web/src/types/user-features.ts` - TypeScript types (already created)
+- `docs/user-features-api-design.md` - Full API specification
+- `apps/web/src/components/atoms/BookmarkButton/` - Pattern reference
+
+### Reporting Back
+Update `GEMINI_WORK_REPORTS.md` with:
+- Status: COMPLETED
+- Files created
+- Challenges encountered
+- Testing results
+
+---
+
+## TASK-005: User Profile Form Component
+**Assigned:** 2025-12-02 21:00
+**Status:** 🚀 ACTIVE
+**Priority:** MEDIUM
+**Estimated Time:** 60 minutes
+
+### Task Description
+Create UserProfileForm component for editing user profile information and preferences.
+
+### Requirements
+1. Create component: `apps/web/src/components/organisms/UserProfileForm/`
+2. Use React Hook Form with Zod validation
+3. Two sections:
+   - Personal Info: full_name, phone_number, state, lga
+   - Preferences: theme, notifications, search_defaults
+4. Features:
+   - Pre-populate with current data
+   - Validation (matching backend rules)
+   - Submit updates to API
+   - Success/error toasts
+   - Loading states
+
+### API Endpoints
+```
+GET /api/v1/users/me
+PATCH /api/v1/users/me (for personal info)
+PATCH /api/v1/users/me/preferences (for preferences)
+```
+
+### Expected Files
+- `apps/web/src/components/organisms/UserProfileForm/UserProfileForm.tsx`
+- `apps/web/src/components/organisms/UserProfileForm/UserProfileForm.test.tsx`
+- `apps/web/src/components/organisms/UserProfileForm/index.ts`
+- `apps/web/src/hooks/useUserProfile.ts`
+
+### Acceptance Criteria
+- [ ] Form pre-populates with current data
+- [ ] Validation matches backend rules
+- [ ] Updates save successfully
+- [ ] Loading/error states handled
+- [ ] Accessible form
+- [ ] Unit tests
+- [ ] No TypeScript/ESLint errors
+
+---
+
+**Active Tasks:** 2 (TASK-004, TASK-005)
 **Pending Tasks:** 0
-**Completed Tasks:** 3 (TASK-001, TASK-002 ✅, TASK-003 ✅)
+**Completed Tasks:** 3 (TASK-001, TASK-002, TASK-003)
