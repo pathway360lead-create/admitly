@@ -7,35 +7,44 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
 import { BookmarkButton } from './BookmarkButton';
-import { useBookmarks } from '@/hooks/useBookmarks';
 
-// Mock the useBookmarks hook
-vi.mock('@/hooks/useBookmarks');
+// Use vi.hoisted to create the mock function so it's available in the factory
+const { mockUseBookmarks } = vi.hoisted(() => {
+  return { mockUseBookmarks: vi.fn() };
+});
+
+// Mock the module using the hoisted mock function
+vi.mock('@/hooks/useBookmarks', () => ({
+  useBookmarks: mockUseBookmarks,
+}));
 
 describe('BookmarkButton', () => {
   const mockToggleBookmark = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockUseBookmarks.mockReset();
   });
 
   it('renders in the unbookmarked state', () => {
-    (useBookmarks as jest.Mock).mockReturnValue({
+    mockUseBookmarks.mockReturnValue({
       isBookmarked: false,
       toggleBookmark: mockToggleBookmark,
       isLoading: false,
+      isError: false,
     });
 
     render(<BookmarkButton entityType="program" entityId="123" />);
-    
+
     expect(screen.getByLabelText('Add bookmark')).toBeInTheDocument();
   });
 
   it('renders in the bookmarked state', () => {
-    (useBookmarks as jest.Mock).mockReturnValue({
+    mockUseBookmarks.mockReturnValue({
       isBookmarked: true,
       toggleBookmark: mockToggleBookmark,
       isLoading: false,
+      isError: false,
     });
 
     render(<BookmarkButton entityType="program" entityId="123" />);
@@ -44,10 +53,11 @@ describe('BookmarkButton', () => {
   });
 
   it('calls toggleBookmark when clicked', () => {
-    (useBookmarks as jest.Mock).mockReturnValue({
+    mockUseBookmarks.mockReturnValue({
       isBookmarked: false,
       toggleBookmark: mockToggleBookmark,
       isLoading: false,
+      isError: false,
     });
 
     render(<BookmarkButton entityType="program" entityId="123" />);
@@ -58,10 +68,11 @@ describe('BookmarkButton', () => {
   });
 
   it('shows a loading state', () => {
-    (useBookmarks as jest.Mock).mockReturnValue({
+    mockUseBookmarks.mockReturnValue({
       isBookmarked: false,
       toggleBookmark: mockToggleBookmark,
       isLoading: true,
+      isError: false,
     });
 
     render(<BookmarkButton entityType="program" entityId="123" />);
@@ -71,10 +82,11 @@ describe('BookmarkButton', () => {
   });
 
   it('renders as a full button with text', () => {
-    (useBookmarks as jest.Mock).mockReturnValue({
+    mockUseBookmarks.mockReturnValue({
       isBookmarked: false,
       toggleBookmark: mockToggleBookmark,
       isLoading: false,
+      isError: false,
     });
 
     render(<BookmarkButton entityType="program" entityId="123" variant="button" />);
@@ -83,23 +95,18 @@ describe('BookmarkButton', () => {
   });
 
   it('is accessible via keyboard', () => {
-    (useBookmarks as jest.Mock).mockReturnValue({
+    mockUseBookmarks.mockReturnValue({
       isBookmarked: false,
       toggleBookmark: mockToggleBookmark,
       isLoading: false,
+      isError: false,
     });
 
     render(<BookmarkButton entityType="program" entityId="123" />);
     const button = screen.getByLabelText('Add bookmark');
     fireEvent.keyDown(button, { key: 'Enter', code: 'Enter' });
-    
-    // Note: Testing the actual keyboard interaction requires a more complex setup.
-    // This is a basic check. A better approach would be to check focus and click simulation.
-    // For now, we assume the browser handles the click on Enter.
-    // A more robust test would be:
+
     button.focus();
     expect(button).toHaveFocus();
-    // fireEvent.keyDown(document.activeElement, { key: 'Enter' });
-    // expect(mockToggleBookmark).toHaveBeenCalledTimes(1);
   });
 });

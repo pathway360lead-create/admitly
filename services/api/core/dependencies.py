@@ -118,3 +118,9 @@ def get_search_history_service(
     # Extract user ID from Supabase auth user object
     user_id = current_user.user.id
     return SearchHistoryService(supabase, user_id)
+
+
+def get_email_service():
+    """Get email service instance"""
+    from services.email_service import email_service
+    return email_service

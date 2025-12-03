@@ -63,9 +63,10 @@ class Settings(BaseSettings):
     # Monitoring
     SENTRY_DSN: str = ""
 
-    # Email
-    SENDGRID_API_KEY: str = ""
-    FROM_EMAIL: str = "noreply@admitly.com.ng"
+    # Email (Resend)
+    RESEND_API_KEY: str = ""
+    FROM_EMAIL: str = "Admitly <hello@admitly.com.ng>"
+    SUPPORT_EMAIL: str = "support@admitly.com.ng"
 
     class Config:
         env_file = ".env"

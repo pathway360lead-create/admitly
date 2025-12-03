@@ -7,8 +7,8 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient } from '@/lib/api-client'; // Assuming a pre-configured axios instance
-import { useToast } from '@/components/ui/use-toast'; // Assuming a toast hook exists
+import { api } from '@/lib/api';
+import { useToast } from '@/components/ui/use-toast';
 import { Bookmark, BookmarkCreate, BookmarkCheckResponse, EntityType } from '@/types/user-features';
 
 // == Query Keys ============================================================
@@ -27,7 +27,7 @@ const bookmarkKeys = {
  * Checks the bookmark status of a single entity.
  */
 const checkBookmarkStatus = async (entityType: EntityType, entityId: string): Promise<BookmarkCheckResponse> => {
-  const response = await apiClient.get(`/users/me/bookmarks/check`, {
+  const response = await api.get(`/users/me/bookmarks/check`, {
     params: { entity_type: entityType, entity_ids: entityId },
   });
   return response.data;
@@ -37,7 +37,7 @@ const checkBookmarkStatus = async (entityType: EntityType, entityId: string): Pr
  * Creates a new bookmark.
  */
 const createBookmark = async (data: BookmarkCreate): Promise<Bookmark> => {
-  const response = await apiClient.post('/users/me/bookmarks', data);
+  const response = await api.post('/users/me/bookmarks', data);
   return response.data;
 };
 
@@ -45,7 +45,7 @@ const createBookmark = async (data: BookmarkCreate): Promise<Bookmark> => {
  * Deletes a bookmark.
  */
 const deleteBookmark = async (bookmarkId: string): Promise<void> => {
-  await apiClient.delete(`/users/me/bookmarks/${bookmarkId}`);
+  await api.delete(`/users/me/bookmarks/${bookmarkId}`);
 };
 
 
@@ -98,10 +98,10 @@ export const useBookmarks = (entityType: EntityType, entityId: string) => {
    */
   const { mutate: removeBookmark, isPending: isRemoving } = useMutation({
     mutationFn: () => {
-        if (!bookmarkId) {
-            throw new Error('Cannot remove bookmark without a bookmark ID.');
-        }
-        return deleteBookmark(bookmarkId)
+      if (!bookmarkId) {
+        throw new Error('Cannot remove bookmark without a bookmark ID.');
+      }
+      return deleteBookmark(bookmarkId)
     },
     onSuccess: () => {
       toast({

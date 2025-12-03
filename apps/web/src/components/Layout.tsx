@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Header } from './organisms/Header';
 import { Footer } from './organisms/Footer';
 import { ComparisonTray } from './organisms/ComparisonTray';
+import { Toaster } from './ui/toaster';
 
 interface LayoutProps {
   children: ReactNode;
@@ -38,6 +39,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
       <main className="flex-1">{children}</main>
       <Footer />
       {location.pathname !== '/compare' && <ComparisonTray />}
+      <Toaster />
     </div>
   );
 };

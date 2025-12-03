@@ -8,7 +8,7 @@
 import { FC } from 'react';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { cn } from '@/lib/utils'; // Assuming a utility for classnames
-import { Button } from '@packages/ui/components/button'; // Using the shared button
+import { Button } from '@admitly/ui';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { EntityType } from '@/types/user-features';
 

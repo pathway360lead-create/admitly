@@ -74,6 +74,7 @@ from routers.bookmarks import router as bookmarks_router
 from routers.saved_searches import router as saved_searches_router
 from routers.user_profile import router as user_profile_router
 from routers.search_history import router as search_history_router
+from routers.notifications import router as notifications_router
 
 app.include_router(auth_router, prefix="/api/v1", tags=["auth"])
 app.include_router(institutions_router, prefix="/api/v1")
@@ -83,6 +84,7 @@ app.include_router(bookmarks_router, prefix="/api/v1")
 app.include_router(saved_searches_router, prefix="/api/v1")
 app.include_router(user_profile_router, prefix="/api/v1")
 app.include_router(search_history_router, prefix="/api/v1")
+app.include_router(notifications_router, prefix="/api/v1")
 
 
 if __name__ == "__main__":
