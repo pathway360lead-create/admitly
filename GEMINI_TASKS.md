@@ -1,6 +1,20 @@
 # Gemini CLI Tasks
 **Project:** Admitly Platform
-**Last Updated:** December 2, 2025
+**Last Updated:** December 3, 2025
+
+---
+
+## 🚨 MVP PIVOT NOTICE (December 3, 2025)
+
+**Strategic Change:** We're pivoting to focus ONLY on MVP-critical features.
+
+**Tasks CANCELLED** (Premium features, defer to Phase 3):
+- ❌ TASK-004: Saved Searches Components (Phase 3 Premium)
+- ❌ TASK-005: User Profile Form Component (Phase 2)
+
+**New Focus:** Frontend-backend integration for core features only.
+
+**Active Tasks:** 4 MVP-critical integration tasks (TASK-006 through TASK-009)
 
 ---
 
@@ -513,6 +527,211 @@ PATCH /api/v1/users/me/preferences (for preferences)
 
 ---
 
-**Active Tasks:** 2 (TASK-004, TASK-005)
-**Pending Tasks:** 0
+## TASK-006: Connect SearchPage to Backend API (MVP CRITICAL)
+**Assigned:** 2025-12-03
+**Status:** 🚀 ACTIVE
+**Priority:** 🔴 P0 CRITICAL - MVP BLOCKER
+**Estimated Time:** 3-4 hours
+
+### Task Description
+Remove ALL mock data from SearchPage and connect to real backend API with Meilisearch.
+
+### Current State
+- SearchPage currently uses mock data
+- Search functionality not connected to backend
+- No real search results displayed
+
+### Requirements
+1. Update `apps/web/src/pages/SearchPage.tsx` to use real API
+2. Connect to these endpoints:
+   - `GET /api/v1/search?query={q}&page={p}&page_size={ps}` - Main search
+   - `GET /api/v1/search/autocomplete?query={q}` - Autocomplete suggestions
+3. Update `apps/web/src/hooks/useSearch.ts` to call real API (not mock)
+4. Handle loading states
+5. Handle empty results
+6. Handle errors
+7. Display real program data from backend
+
+### API Response Format
+```typescript
+interface SearchResponse {
+  results: Program[];
+  total: number;
+  page: number;
+  page_size: number;
+  query: string;
+  processing_time_ms: number;
+}
+```
+
+### Acceptance Criteria
+- [ ] Search query calls real backend API
+- [ ] Results display real programs from database
+- [ ] Loading spinner shown during search
+- [ ] Empty state shown when no results
+- [ ] Error message shown on API failure
+- [ ] Pagination works with real data
+- [ ] Remove ALL mock data imports
+- [ ] No TypeScript errors
+- [ ] Test with backend running locally
+
+### Testing
+```bash
+# 1. Start backend
+cd services/api && uvicorn main:app --reload
+
+# 2. Start frontend
+cd apps/web && pnpm dev
+
+# 3. Test search for "computer science"
+# 4. Verify real data appears
+```
+
+### Reference Files
+- `apps/web/src/lib/api.ts` - API client
+- `services/api/routers/search.py` - Backend search endpoint
+
+### Reporting Back
+Update `GEMINI_WORK_REPORTS.md` with:
+- Status: COMPLETED or BLOCKED
+- Number of mock data references removed
+- Testing results (screenshots of real data)
+- Any issues encountered
+
+---
+
+## TASK-007: Add Search Filters UI (MVP CRITICAL)
+**Assigned:** 2025-12-03
+**Status:** 🚀 ACTIVE
+**Priority:** 🔴 P0 CRITICAL - MVP BLOCKER
+**Estimated Time:** 2-3 hours
+
+### Task Description
+Add working search filters to SearchPage (state, institution type, degree type, tuition range).
+
+### Current State
+- Search filters UI exists but doesn't work
+- Filters not connected to backend API
+- No filter state management
+
+### Requirements
+1. Update `apps/web/src/components/organisms/SearchFilters/` to work with real API
+2. Add these filters:
+   - **State:** Dropdown (36 Nigerian states)
+   - **Institution Type:** Checkboxes (Federal/State/Private University, Polytechnic, etc.)
+   - **Degree Type:** Checkboxes (BSc, BA, HND, ND, Pre-degree)
+   - **Tuition Range:** Slider (₦0 - ₦5,000,000)
+3. Apply filters to search API:
+   ```
+   GET /api/v1/search?query=computer&state=Lagos&type=federal_university&min_tuition=0&max_tuition=500000
+   ```
+4. Show active filters as removable chips
+5. "Clear all filters" button
+6. Filter counts (e.g., "Lagos (45 programs)")
+
+### Filter Query Parameters
+```typescript
+interface SearchFilters {
+  state?: string[];
+  type?: string[];  // institution_type
+  degree_type?: string[];
+  min_tuition?: number;
+  max_tuition?: number;
+}
+```
+
+### Acceptance Criteria
+- [ ] All 4 filter types work
+- [ ] Filters update search results
+- [ ] Active filters shown as chips
+- [ ] Clear all filters works
+- [ ] URL updates with filter params
+- [ ] Filters persist on page reload
+- [ ] Mobile-responsive
+- [ ] No TypeScript errors
+
+### Reference Files
+- `apps/web/src/components/organisms/SearchFilters/SearchFilters.tsx`
+- `services/api/routers/search.py` - Backend accepts filters
+
+### Reporting Back
+Update `GEMINI_WORK_REPORTS.md` with:
+- Status: COMPLETED
+- Filters implemented
+- Screenshots of working filters
+
+---
+
+## TASK-008: Connect InstitutionsPage to Backend (MVP CRITICAL)
+**Assigned:** 2025-12-03
+**Status:** ⏳ PENDING (do after TASK-006)
+**Priority:** 🔴 P0 CRITICAL - MVP BLOCKER
+**Estimated Time:** 2 hours
+
+### Task Description
+Remove mock data from InstitutionsPage and connect to real backend API.
+
+### Requirements
+1. Update `apps/web/src/pages/InstitutionsPage.tsx` to use real API
+2. Connect to: `GET /api/v1/institutions?page={p}&page_size={ps}&state={s}&type={t}`
+3. Display real institutions from database (currently 29 institutions)
+4. Update `apps/web/src/hooks/useInstitutions.ts` (if it doesn't exist, create it)
+5. Handle pagination
+6. Handle filters (state, type)
+7. Remove ALL mock data
+
+### API Response
+```typescript
+interface InstitutionsResponse {
+  data: Institution[];
+  pagination: {
+    page: number;
+    page_size: number;
+    total: number;
+    total_pages: number;
+  };
+}
+```
+
+### Acceptance Criteria
+- [ ] Page displays real institutions from database
+- [ ] Pagination works
+- [ ] State filter works
+- [ ] Type filter works
+- [ ] Loading/empty/error states
+- [ ] Remove ALL mock data
+- [ ] No TypeScript errors
+
+---
+
+## TASK-009: Connect ProgramsPage to Backend (MVP CRITICAL)
+**Assigned:** 2025-12-03
+**Status:** ⏳ PENDING (do after TASK-006)
+**Priority:** 🔴 P0 CRITICAL - MVP BLOCKER
+**Estimated Time:** 2 hours
+
+### Task Description
+Remove mock data from ProgramsPage and connect to real backend API.
+
+### Requirements
+1. Update `apps/web/src/pages/ProgramsPage.tsx` to use real API
+2. Connect to: `GET /api/v1/programs?page={p}&page_size={ps}&institution_id={id}&degree_type={dt}`
+3. Display real programs from database (currently 72 programs)
+4. Update `apps/web/src/hooks/usePrograms.ts` (if it doesn't exist, create it)
+5. Handle pagination
+6. Handle filters
+7. Remove ALL mock data
+
+### Acceptance Criteria
+- [ ] Page displays real programs from database
+- [ ] Pagination works
+- [ ] Filters work
+- [ ] Loading/empty/error states
+- [ ] Remove ALL mock data
+- [ ] No TypeScript errors
+
+---
+
+**Active Tasks:** 4 (TASK-006, TASK-007, TASK-008, TASK-009 - ALL MVP CRITICAL)
+**Cancelled Tasks:** 2 (TASK-004, TASK-005 - deferred to Phase 2/3)
 **Completed Tasks:** 3 (TASK-001, TASK-002, TASK-003)
