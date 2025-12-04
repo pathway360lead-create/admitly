@@ -15,11 +15,11 @@ export function useInstitutions(
   options?: Omit<UseQueryOptions<{ data: Institution[]; pagination: any }>, 'queryKey' | 'queryFn'>
 ) {
   return useQuery({
-    queryKey: ['institutions', filters],
+    queryKey: ['institutions', filters.page, filters.page_size, filters],
     queryFn: async () => {
       return apiClient.getInstitutions(filters);
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 1 * 60 * 1000, // 1 minute (reduced from 5 to ensure fresh pagination)
     ...options,
   });
 }

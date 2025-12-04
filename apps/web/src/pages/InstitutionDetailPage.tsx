@@ -129,7 +129,7 @@ export const InstitutionDetailPage: FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" data-testid="institution-detail">
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-2 text-sm text-gray-600">
@@ -164,7 +164,7 @@ export const InstitutionDetailPage: FC = () => {
             <div className="flex-1">
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
                 <div>
-                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">{institution.name}</h1>
+                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1" data-testid="institution-name">{institution.name}</h1>
                   {institution.short_name && (
                     <p className="text-lg text-gray-600">({institution.short_name})</p>
                   )}
@@ -221,6 +221,7 @@ export const InstitutionDetailPage: FC = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2"
+                      data-testid="institution-website"
                     >
                       <Globe className="h-4 w-4" />
                       Visit Website
@@ -239,7 +240,7 @@ export const InstitutionDetailPage: FC = () => {
             {/* About */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-semibold mb-4">About</h2>
-              <div className="prose prose-sm max-w-none text-gray-700">
+              <div className="prose prose-sm max-w-none text-gray-700" data-testid="institution-description">
                 {institution.description ? (
                   <p className="whitespace-pre-line">{institution.description}</p>
                 ) : (
@@ -249,7 +250,7 @@ export const InstitutionDetailPage: FC = () => {
             </div>
 
             {/* Programs */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white rounded-lg shadow-sm p-6" data-testid="institution-programs">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold">Programs Offered</h2>
                 <span className="text-sm font-medium bg-gray-100 px-2 py-1 rounded-full text-gray-600">
@@ -279,6 +280,7 @@ export const InstitutionDetailPage: FC = () => {
                       key={program.id}
                       to={`/programs/${program.slug}`}
                       className="block p-4 border border-gray-200 rounded-lg hover:border-primary hover:shadow-md transition-all group"
+                      data-testid="program-card"
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
@@ -326,7 +328,7 @@ export const InstitutionDetailPage: FC = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Contact Information */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white rounded-lg shadow-sm p-6" data-testid="contact-info">
               <h3 className="font-semibold mb-4 text-gray-900">Contact Information</h3>
               <div className="space-y-4">
                 {institution.email ? (
