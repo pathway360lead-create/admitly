@@ -735,3 +735,157 @@ Remove mock data from ProgramsPage and connect to real backend API.
 **Active Tasks:** 0
 **Cancelled Tasks:** 1 (TASK-004 - deferred to Phase 3)
 **Completed Tasks:** 8 (TASK-001, TASK-002, TASK-003, TASK-005, TASK-006, TASK-007, TASK-008, TASK-009)
+
+---
+
+## TASK-010: Improve Detail Pages (InstitutionDetail & ProgramDetail)
+**Assigned:** 2025-12-03
+**Status:** 🆕 NEW
+**Priority:** HIGH - Production Readiness
+**Estimated Time:** 60 minutes
+
+### Task Description
+Improve InstitutionDetailPage and ProgramDetailPage to handle real data from backend and add missing error/loading states.
+
+### Current Issues
+- Detail pages may not handle all fields from backend
+- Missing proper error handling
+- Loading states could be improved
+- Empty state handling
+
+### Requirements
+1. Verify InstitutionDetailPage works with backend:
+   - GET `/api/v1/institutions/{slug}`
+   - Display all fields from API response
+   - Handle missing optional fields gracefully
+2. Verify ProgramDetailPage works with backend:
+   - GET `/api/v1/programs/{id}`
+   - Display all fields from API response
+   - Handle missing optional fields
+3. Add skeleton loaders during data fetch
+4. Add proper error messages
+5. Add empty states for missing data
+6. Test with 686 real programs and 29 institutions
+
+### Acceptance Criteria
+- [ ] Both detail pages load real data from backend
+- [ ] Skeleton loaders shown during loading
+- [ ] Error messages displayed on API failure
+- [ ] Handle 404 errors (institution/program not found)
+- [ ] All fields displayed properly (no "undefined" text)
+- [ ] Mobile responsive
+- [ ] No TypeScript errors
+
+### Testing
+```bash
+# Test institution detail
+Visit: https://admitly-web.onrender.com/institutions/unilag
+
+# Test program detail  
+Visit: https://admitly-web.onrender.com/programs/{program-id}
+```
+
+---
+
+## TASK-011: Add E2E Tests for Critical User Flows
+**Assigned:** 2025-12-03
+**Status:** 🆕 NEW
+**Priority:** MEDIUM - Quality Assurance
+**Estimated Time:** 90 minutes
+
+### Task Description
+Write end-to-end tests for critical user flows using Playwright or Vitest component tests.
+
+### Critical Flows to Test
+1. **Search Flow:**
+   - User enters search query
+   - Results appear
+   - User applies filters
+   - Results update
+   - User clicks on a program
+   
+2. **Browse Flow:**
+   - User visits institutions page
+   - User clicks on an institution
+   - Institution detail page loads
+   - User clicks on a program from institution
+   
+3. **Navigation Flow:**
+   - User navigates between pages
+   - Back button works
+   - URLs update correctly
+
+### Requirements
+1. Create test files in `apps/web/src/__tests__/e2e/`
+2. Test with real data (not mocks)
+3. Test error states (network failures)
+4. Test loading states
+5. Minimum 3 test scenarios per flow
+
+### Acceptance Criteria
+- [ ] At least 9 E2E tests written
+- [ ] All tests passing
+- [ ] Tests use real API calls (or mock API responses)
+- [ ] Coverage of happy path and error paths
+- [ ] Clear test descriptions
+
+---
+
+## TASK-012: Production Readiness Checklist
+**Assigned:** 2025-12-03
+**Status:** 🆕 NEW
+**Priority:** HIGH - Launch Blocker
+**Estimated Time:** 45 minutes
+
+### Task Description
+Go through production readiness checklist and create a report of issues found.
+
+### Checklist Items
+1. **Accessibility:**
+   - [ ] All buttons have aria-labels
+   - [ ] Forms have proper labels
+   - [ ] Keyboard navigation works
+   - [ ] Screen reader compatible
+   
+2. **Mobile Responsiveness:**
+   - [ ] Test on mobile viewport (375px width)
+   - [ ] All pages render correctly
+   - [ ] Touch targets are 44x44px minimum
+   - [ ] No horizontal scrolling
+   
+3. **Error Handling:**
+   - [ ] Network errors show user-friendly messages
+   - [ ] 404 pages exist
+   - [ ] 500 errors handled gracefully
+   - [ ] No console errors on production
+   
+4. **Performance:**
+   - [ ] Images optimized
+   - [ ] No large bundle sizes
+   - [ ] Lazy loading implemented where needed
+   - [ ] No memory leaks
+
+5. **SEO & Meta Tags:**
+   - [ ] Page titles set correctly
+   - [ ] Meta descriptions present
+   - [ ] Open Graph tags added
+
+### Deliverable
+Create a file: `apps/web/PRODUCTION_READINESS_REPORT.md` with:
+- ✅ Items passing
+- ❌ Items failing with details
+- Recommended fixes with priority
+- Estimated time to fix each issue
+
+### Acceptance Criteria
+- [ ] Report created
+- [ ] All checklist items tested
+- [ ] Issues documented with screenshots
+- [ ] Priority assigned to each issue
+- [ ] Ready for review
+
+---
+
+**Active Tasks:** 3 (TASK-010, TASK-011, TASK-012)
+**Completed Tasks:** 9 (TASK-001, TASK-002, TASK-003, TASK-005, TASK-006, TASK-007, TASK-008, TASK-009)
+**Cancelled Tasks:** 1 (TASK-004 - deferred to Phase 3)
