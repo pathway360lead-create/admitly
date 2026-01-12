@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { InstitutionCard } from '@/components/molecules/InstitutionCard';
 import { SearchBar } from '@/components/molecules/SearchBar';
@@ -6,43 +6,72 @@ import { SearchFilters, ActiveFilters } from '@/components/organisms/SearchFilte
 import { Button } from '@admitly/ui';
 import { useInstitutions } from '@/hooks/api';
 import { useSearchFilterStore } from '@/stores/searchFilterStore';
+import { useComparisonStore } from '@/stores/comparisonStore';
+import { useToast } from '@/components/ui/use-toast';
 
 export const InstitutionsPage: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {
-    filters,
-    setFilter,
-    getFiltersForAPI,
-    filtersFromURLParams,
-    filtersToURLParams,
-  } = useSearchFilterStore();
+  const searchFilterStore = useSearchFilterStore();
+  const { filters, setFilter } = searchFilterStore;
+  const { addItem, isInComparison } = useComparisonStore();
+  const { toast } = useToast();
 
   // Sync filters with URL on mount
   useEffect(() => {
-    filtersFromURLParams(searchParams);
+    searchFilterStore.filtersFromURLParams(searchParams);
   }, []); // Only run on mount
 
   // Sync filters to URL when they change
   useEffect(() => {
-    const params = filtersToURLParams();
+    const params = searchFilterStore.filtersToURLParams();
     setSearchParams(params, { replace: true });
-  }, [filters, setSearchParams, filtersToURLParams]);
+  }, [filters, setSearchParams, searchFilterStore]);
 
-  // Get API-compatible filters
-  const apiFilters = getFiltersForAPI('institutions');
+  // Get API-compatible filters (memoized to prevent unnecessary re-renders)
+  // Only depend on filters object, not on the getFiltersForAPI function
+  const apiFilters = useMemo(() => {
+    return searchFilterStore.getFiltersForAPI('institutions');
+  }, [filters, searchFilterStore]);
 
-  // Fetch institutions from API with filters
-  const { data, isLoading, isError, error } = useInstitutions({
+  // Combine pagination with filters (memoized for stable reference)
+  const institutionFilters = useMemo(() => ({
+    ...apiFilters, // Spread first to ensure local page state overrides any defaults
     page: currentPage,
     page_size: 20,
-    ...apiFilters,
-  });
+  }), [currentPage, apiFilters]);
 
-  // Extract institutions and pagination from response
-  const institutions = data?.data || [];
-  const pagination = data?.pagination;
+  // Fetch institutions from API with filters
+  const { data, isLoading, isError, error } = useInstitutions(institutionFilters);
+
+  // Track previous filters to detect ACTUAL changes
+  const prevFiltersRef = useRef(filters);
+
+  // Handle adding to comparison
+  const handleCompare = (id: string) => {
+    const success = addItem(id, 'institution');
+    if (success) {
+      toast({
+        title: "Added to comparison",
+        description: "You can compare up to 3 institutions",
+      });
+    } else {
+      if (isInComparison(id)) {
+        toast({
+          title: "Already added",
+          description: "This institution is already in your comparison list",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Comparison limit reached",
+          description: "You can only compare up to 3 institutions at a time",
+          variant: "destructive",
+        });
+      }
+    }
+  };
 
   // Handle search query changes
   const handleSearch = (query: string) => {
@@ -50,10 +79,28 @@ export const InstitutionsPage: FC = () => {
     setCurrentPage(1); // Reset to first page on search
   };
 
-  // Handle filter changes
-  const handleFilterChange = () => {
-    setCurrentPage(1); // Reset to first page when filters change
-  };
+  // Handle filter changes - Only reset page when filters ACTUALLY change
+  const handleFilterChange = useCallback(() => {
+    // Compare current filters with previous
+    const filtersChanged = JSON.stringify(prevFiltersRef.current) !== JSON.stringify(filters);
+
+    if (filtersChanged) {
+      console.log('[InstitutionsPage] Filters changed, resetting to page 1', {
+        prev: prevFiltersRef.current,
+        curr: filters
+      });
+      prevFiltersRef.current = filters;
+      setCurrentPage(1);
+    }
+  }, [filters]);
+
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    // This effect should run whenever the filters change.
+    // The handleFilterChange function is memoized, so it won't cause
+    // unnecessary re-renders if the filters object itself hasn't changed.
+    handleFilterChange();
+  }, [filters, handleFilterChange]);
 
   // Handle loading and error states
   if (isLoading) {
@@ -87,6 +134,9 @@ export const InstitutionsPage: FC = () => {
       </div>
     );
   }
+
+  const institutions = data?.data || [];
+  const pagination = data?.pagination;
 
   return (
     <div className="min-h-screen py-8">
@@ -146,9 +196,15 @@ export const InstitutionsPage: FC = () => {
             {/* Institutions Grid */}
             {institutions.length > 0 ? (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" data-testid="institutions-list">
                   {institutions.map((institution) => (
-                    <InstitutionCard key={institution.id} institution={institution} />
+                    <div key={institution.id} data-testid="institution-card">
+                      <InstitutionCard
+                        institution={institution}
+                        onCompare={handleCompare}
+                        isComparing={isInComparison(institution.id)}
+                      />
+                    </div>
                   ))}
                 </div>
 
@@ -159,6 +215,7 @@ export const InstitutionsPage: FC = () => {
                       variant="outline"
                       onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                       disabled={!pagination.has_prev}
+                      data-testid="prev-page"
                     >
                       Previous
                     </Button>
@@ -171,6 +228,7 @@ export const InstitutionsPage: FC = () => {
                       variant="outline"
                       onClick={() => setCurrentPage((p) => p + 1)}
                       disabled={!pagination.has_next}
+                      data-testid="next-page"
                     >
                       Next
                     </Button>
@@ -178,7 +236,7 @@ export const InstitutionsPage: FC = () => {
                 )}
               </>
             ) : (
-              <div className="text-center py-12">
+              <div className="text-center py-12" data-testid="empty-state">
                 <p className="text-lg text-muted-foreground mb-4">No institutions found</p>
                 <p className="text-sm text-muted-foreground mb-6">
                   Try adjusting your filters or search query
