@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ProgramCard } from '@/components/molecules/ProgramCard';
 import { SearchBar } from '@/components/molecules/SearchBar';
@@ -6,43 +6,77 @@ import { SearchFilters, ActiveFilters } from '@/components/organisms/SearchFilte
 import { Button } from '@admitly/ui';
 import { usePrograms } from '@/hooks/api';
 import { useSearchFilterStore } from '@/stores/searchFilterStore';
+import { useComparisonStore } from '@/stores/comparisonStore';
+import { useToast } from '@/components/ui/use-toast';
 
 export const ProgramsPage: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {
-    filters,
-    setFilter,
-    getFiltersForAPI,
-    filtersFromURLParams,
-    filtersToURLParams,
-  } = useSearchFilterStore();
+  const searchFilterStore = useSearchFilterStore();
+  const { filters, setFilter } = searchFilterStore;
+  const { addItem, isInComparison } = useComparisonStore();
+  const { toast } = useToast();
 
   // Sync filters with URL on mount
   useEffect(() => {
-    filtersFromURLParams(searchParams);
+    searchFilterStore.filtersFromURLParams(searchParams);
   }, []); // Only run on mount
 
   // Sync filters to URL when they change
   useEffect(() => {
-    const params = filtersToURLParams();
+    const params = searchFilterStore.filtersToURLParams();
     setSearchParams(params, { replace: true });
-  }, [filters, setSearchParams, filtersToURLParams]);
+  }, [filters, setSearchParams, searchFilterStore]);
 
-  // Get API-compatible filters
-  const apiFilters = getFiltersForAPI('programs');
+  // Get API-compatible filters (memoized to prevent unnecessary re-renders)
+  // Only depend on filters object, not on the getFiltersForAPI function
+  const apiFilters = useMemo(() => {
+    return searchFilterStore.getFiltersForAPI('programs');
+  }, [filters, searchFilterStore]);
 
-  // Fetch programs from API with filters
-  const { data, isLoading, isError, error } = usePrograms({
+  // Combine pagination with filters (memoized for stable reference)
+  // Combine pagination with filters (memoized for stable reference)
+  const programFilters = useMemo(() => ({
+    ...apiFilters, // Spread first to ensure local page state overrides any defaults
     page: currentPage,
     page_size: 20,
-    ...apiFilters,
-  });
+  }), [currentPage, apiFilters]);
+
+  // Fetch programs from API with filters
+  const { data, isLoading, isError, error } = usePrograms(programFilters);
 
   // Extract programs and pagination from response
   const programs = data?.data || [];
   const pagination = data?.pagination;
+
+  // Track previous filters to detect ACTUAL changes
+  const prevFiltersRef = useRef(filters);
+
+  // Handle adding to comparison
+  const handleCompare = (id: string) => {
+    const success = addItem(id, 'program');
+    if (success) {
+      toast({
+        title: "Added to comparison",
+        description: "You can compare up to 3 programs",
+      });
+    } else {
+      if (isInComparison(id)) {
+        toast({
+          title: "Already added",
+          description: "This program is already in your comparison list",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Comparison limit reached",
+          description: "You can only compare up to 3 programs at a time",
+          variant: "destructive",
+        });
+      }
+    }
+  };
 
   // Handle search query changes
   const handleSearch = (query: string) => {
@@ -50,10 +84,16 @@ export const ProgramsPage: FC = () => {
     setCurrentPage(1); // Reset to first page on search
   };
 
-  // Handle filter changes
-  const handleFilterChange = () => {
-    setCurrentPage(1); // Reset to first page when filters change
-  };
+  // Handle filter changes - Only reset page when filters ACTUALLY change
+  const handleFilterChange = useCallback(() => {
+    // Compare current filters with previous
+    const filtersChanged = JSON.stringify(prevFiltersRef.current) !== JSON.stringify(filters);
+
+    if (filtersChanged) {
+      prevFiltersRef.current = filters;
+      setCurrentPage(1);
+    }
+  }, [filters]);
 
   // Handle loading and error states
   if (isLoading) {
@@ -145,9 +185,16 @@ export const ProgramsPage: FC = () => {
             {/* Programs Grid */}
             {programs.length > 0 ? (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" data-testid="programs-list">
                   {programs.map((program) => (
-                    <ProgramCard key={program.id} program={program} showInstitution />
+                    <div key={program.id} data-testid="program-card">
+                      <ProgramCard
+                        program={program}
+                        showInstitution
+                        onCompare={handleCompare}
+                        isComparing={isInComparison(program.id)}
+                      />
+                    </div>
                   ))}
                 </div>
 
@@ -158,6 +205,7 @@ export const ProgramsPage: FC = () => {
                       variant="outline"
                       onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                       disabled={!pagination.has_prev}
+                      data-testid="prev-page"
                     >
                       Previous
                     </Button>
@@ -170,6 +218,7 @@ export const ProgramsPage: FC = () => {
                       variant="outline"
                       onClick={() => setCurrentPage((p) => p + 1)}
                       disabled={!pagination.has_next}
+                      data-testid="next-page"
                     >
                       Next
                     </Button>
@@ -177,7 +226,7 @@ export const ProgramsPage: FC = () => {
                 )}
               </>
             ) : (
-              <div className="text-center py-12">
+              <div className="text-center py-12" data-testid="empty-state">
                 <p className="text-lg text-muted-foreground mb-4">No programs found</p>
                 <p className="text-sm text-muted-foreground mb-6">
                   Try adjusting your filters or search query

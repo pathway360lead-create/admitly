@@ -1039,3 +1039,4 @@ Ignored nodes: comments, script, style
        [34mrerun x4[39m
 [2K[1A[2K[G       [90mrerun x4[39m
 [2K[1A[2K[G       [2m[90mrerun x4[39m[22m
+[2K[1A[2K[G

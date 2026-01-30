@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { createClient } from '@admitly/api-client';
 import type {
   SearchParams,
   SearchResponse,
@@ -6,7 +7,12 @@ import type {
   AutocompleteResponse,
 } from '@/types/search';
 
-const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Use relative path in development to leverage Vite proxy
+// In production, use the environment variable or default
+const isDev = import.meta.env.DEV;
+const apiUrl = isDev ? '' : (import.meta.env.VITE_API_URL || 'http://localhost:8000');
+
+export const apiClient = createClient(apiUrl);
 
 export const api = axios.create({
   baseURL: apiUrl,

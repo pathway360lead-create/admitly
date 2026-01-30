@@ -7,7 +7,7 @@ from fastapi import HTTPException, status
 from supabase import AuthApiError
 import logging
 
-from core.database import get_supabase, get_supabase_admin
+from core.database import get_supabase
 from core.security import get_token_expiration_seconds
 from schemas.auth import UserRegister, UserLogin, TokenResponse, UserProfile
 
@@ -28,7 +28,6 @@ class AuthService:
 
     def __init__(self):
         self.supabase = get_supabase()
-        self.supabase_admin = get_supabase_admin()
 
     async def register(self, user_data: UserRegister) -> TokenResponse:
         """
@@ -78,7 +77,7 @@ class AuthService:
             }
 
             try:
-                self.supabase_admin.table('user_profiles').insert(profile_data).execute()
+                self.supabase.table('user_profiles').insert(profile_data).execute()
                 logger.info(f"User profile created for user {auth_response.user.id}")
             except Exception as profile_error:
                 # Log but don't fail - the profile might be created by database trigger

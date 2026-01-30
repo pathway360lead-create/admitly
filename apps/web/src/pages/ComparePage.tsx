@@ -1,37 +1,16 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useComparisonStore } from '@/stores/comparisonStore';
+import { useComparisonData } from '@/hooks/useComparisonData';
 import { Button } from '@admitly/ui';
-import { GitCompare, X, CheckCircle, XCircle } from 'lucide-react';
-import { mockPrograms, mockInstitutions } from '@/lib/mockData';
+import { GitCompare, X, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import type { Program, Institution } from '@admitly/types';
 
 export const ComparePage: FC = () => {
   const { items, removeItem, clear } = useComparisonStore();
 
-  const comparisonData = items.map((item) => {
-    if (item.type === 'program') {
-      const programData = mockPrograms.find((p) => p.id === item.id);
-      return {
-        ...item,
-        data: programData,
-      };
-    } else {
-      const institutionData = mockInstitutions.find((i) => i.id === item.id);
-      return {
-        ...item,
-        data: institutionData,
-      };
-    }
-  });
-
-  const programs = comparisonData.filter(
-    (item) => item.type === 'program' && item.data
-  ) as Array<{ id: string; type: 'program'; addedAt: string; data: Program }>;
-
-  const institutions = comparisonData.filter(
-    (item) => item.type === 'institution' && item.data
-  ) as Array<{ id: string; type: 'institution'; addedAt: string; data: Institution }>;
+  // Fetch real data from backend API using the comparison data hook
+  const { programs, institutions, isLoading, hasError } = useComparisonData();
 
   if (items.length === 0) {
     return (
@@ -50,6 +29,36 @@ export const ComparePage: FC = () => {
               <Link to="/institutions">Browse Institutions</Link>
             </Button>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 text-primary animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Loading comparison data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (hasError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <XCircle className="h-16 w-16 text-red-400 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error loading data</h2>
+          <p className="text-gray-600 mb-6">
+            Some items could not be loaded. Please try again later.
+          </p>
+          <Button onClick={clear} variant="outline">
+            Clear Comparison
+          </Button>
         </div>
       </div>
     );
@@ -127,7 +136,7 @@ export const ComparePage: FC = () => {
                     <td className="p-4 font-medium text-gray-700 bg-gray-50">Duration</td>
                     {programs.map((item) => (
                       <td key={item.id} className="p-4">
-                        {item.data?.duration_years} years
+                        {item.data?.duration_years ? `${item.data.duration_years} years` : 'N/A'}
                       </td>
                     ))}
                   </tr>
@@ -136,7 +145,7 @@ export const ComparePage: FC = () => {
                     <td className="p-4 font-medium text-gray-700 bg-gray-50">Mode</td>
                     {programs.map((item) => (
                       <td key={item.id} className="p-4 capitalize">
-                        {item.data?.mode}
+                        {item.data?.mode || 'N/A'}
                       </td>
                     ))}
                   </tr>
@@ -145,7 +154,9 @@ export const ComparePage: FC = () => {
                     <td className="p-4 font-medium text-gray-700 bg-gray-50">Tuition (per year)</td>
                     {programs.map((item) => (
                       <td key={item.id} className="p-4 font-semibold text-primary">
-                        ₦{item.data?.tuition_per_year.toLocaleString()}
+                        {item.data?.tuition_per_year
+                          ? `₦${item.data.tuition_per_year.toLocaleString()}`
+                          : 'N/A'}
                       </td>
                     ))}
                   </tr>
@@ -196,7 +207,7 @@ export const ComparePage: FC = () => {
                         ₦
                         {(
                           (item.data?.tuition_per_year || 0) *
-                            (item.data?.duration_years || 0) +
+                          (item.data?.duration_years || 0) +
                           (item.data?.acceptance_fee || 0)
                         ).toLocaleString()}
                       </td>

@@ -1,9 +1,9 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { createClient } from '@admitly/api-client';
+import { apiClient } from '@/lib/api';
 import type { Program, ProgramFilters } from '@admitly/types';
 
 // Create API client instance
-const apiClient = createClient(import.meta.env.VITE_API_URL || 'http://localhost:8000');
+// Client imported from @/lib/api
 
 /**
  * Get list of programs with filters
@@ -14,12 +14,21 @@ export function usePrograms(
   filters: ProgramFilters = {},
   options?: Omit<UseQueryOptions<{ data: Program[]; pagination: any }>, 'queryKey' | 'queryFn'>
 ) {
+  // Extract pagination params explicitly for queryKey
+  // This ensures React Query properly detects page changes
+  const { page = 1, page_size = 20, ...otherFilters } = filters;
+
   return useQuery({
-    queryKey: ['programs', filters.page, filters.page_size, filters],
+    // Explicit queryKey structure - React Query compares each element
+    // When page changes from 1 to 2, queryKey changes and triggers refetch
+    queryKey: ['programs', page, page_size, otherFilters],
     queryFn: async () => {
-      return apiClient.getPrograms(filters);
+      const result = await apiClient.getPrograms(filters);
+      return result;
     },
-    staleTime: 1 * 60 * 1000, // 1 minute (reduced from 5 to ensure fresh pagination)
+    staleTime: 1 * 60 * 1000, // 1 minute
+    // Keep previous data when fetching new page to prevent content flash
+    placeholderData: (previousData) => previousData,
     ...options,
   });
 }

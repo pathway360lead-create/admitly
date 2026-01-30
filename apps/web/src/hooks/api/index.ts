@@ -2,7 +2,7 @@
 // Centralized exports for all React Query hooks
 
 // Institution hooks
-export { useInstitutions, useInstitution, useInstitutionPrograms } from './useInstitutions';
+export { useInstitutions, useInstitution, useInstitutionPrograms, useInstitutionById } from './useInstitutions';
 
 // Program hooks
 export { usePrograms, useProgram, useProgramDetail } from './usePrograms';

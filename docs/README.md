@@ -1,40 +1,41 @@
 # Admitly Platform Documentation
 
-This directory contains comprehensive technical documentation for the Admitly Platform backend APIs and system architecture.
+This directory contains comprehensive technical documentation for the Admitly Platform.
+
+## 📚 Documentation Structure
+
+### Core Documentation
+- **[User Features API Design](./user-features-api-design.md)** - Comprehensive API specification
+- **[User Features Architecture](./user-features-architecture.md)** - System architecture and diagrams
+- **[Email Service Comparison](./email-service-comparison.md)** - Email service evaluation
+
+### Organized Documentation
+
+#### 🚀 [Deployment](./deployment/)
+- **[Deployment Guide](./deployment/deployment-guide.md)** - Complete deployment instructions
+- **[Domain Setup](./deployment/domain-setup.md)** - Domain configuration guide
+- **[DNS Setup](./deployment/dns-setup.md)** - DNS configuration for TrustHost
+
+#### ⚙️ [Setup](./setup/)
+- **[Environment Setup](./setup/environment.md)** - Environment configuration guide
+
+#### 🧪 [Testing](./testing/)
+- **[E2E Test Summary](./testing/e2e-summary.md)** - End-to-end testing documentation
+
+#### 🎨 [Branding](./branding/)
+- **[Branding Strategy](./branding/strategy.md)** - Brand guidelines and strategy
+
+#### 📢 [Marketing](./marketing/)
+- **[Video Scripts](./marketing/video-scripts.md)** - Marketing video scripts
+
+#### 📦 [Archive](./archive/)
+Historical documentation preserved for reference. See [Archive README](./archive/README.md) for details.
 
 ---
 
 ## User Features API Documentation
 
-### 1. [User Features API Design](./user-features-api-design.md) (59 KB)
-**Comprehensive specification document covering:**
-- Complete API endpoint specifications with request/response examples
-- Pydantic schema definitions
-- Service layer implementation patterns
-- Database schema requirements
-- Authentication & authorization details
-- Error handling strategies
-- Testing strategy
-- Implementation roadmap with phases
-
-**When to use:** This is your primary reference when implementing any user feature. Read this document thoroughly before starting development.
-
----
-
-### 2. [User Features API Summary](./user-features-api-summary.md) (9.2 KB)
-**Quick reference guide containing:**
-- Endpoint summary table
-- Database schema overview
-- Implementation checklist
-- Common API call examples
-- File structure guide
-- Quick troubleshooting tips
-
-**When to use:** Use this as a quick reference during development when you need to recall endpoint paths, parameters, or response formats without diving into the full specification.
-
----
-
-### 3. [User Features Architecture](./user-features-architecture.md) (35 KB)
+### [User Features API Design](./user-features-api-design.md)
 **Visual architecture documentation featuring:**
 - System architecture diagrams
 - Request flow examples

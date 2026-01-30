@@ -52,7 +52,7 @@ export const LoginPage: FC = () => {
           <img
             src={admitlyLogo}
             alt="Admitly"
-            className="h-16 sm:h-18 md:h-20 mx-auto mb-6"
+            className="h-20 sm:h-24 mx-auto mb-6"
           />
           <h2 className="text-3xl font-bold text-gray-900">Welcome back</h2>
           <p className="mt-2 text-sm text-gray-600">

@@ -28,11 +28,11 @@ export const Header: FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <nav className="container mx-auto flex h-16 items-center px-4">
+      <nav className="container mx-auto flex h-20 md:h-24 items-center px-4">
         {/* Logo */}
         <div className="flex items-center gap-2 mr-8">
           <a href="/" className="flex items-center">
-            <img src={admitlyLogo} alt="Admitly" className="h-12 sm:h-14 md:h-16 lg:h-18" />
+            <img src={admitlyLogo} alt="Admitly" className="h-16 sm:h-18 md:h-20" />
           </a>
         </div>
 

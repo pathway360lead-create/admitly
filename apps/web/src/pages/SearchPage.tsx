@@ -148,6 +148,7 @@ export const SearchPage: FC = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search for programs or institutions..."
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                aria-label="Search for programs or institutions"
               />
             </div>
             <Button type="submit" data-testid="search-button">Search</Button>
@@ -159,8 +160,8 @@ export const SearchPage: FC = () => {
               data-testid="tab-all"
               onClick={() => setResultType('all')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${resultType === 'all'
-                  ? 'bg-primary text-white active'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                ? 'bg-primary text-white active'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
             >
               All Results (<span data-testid="result-count">{totalResults}</span>)
@@ -169,8 +170,8 @@ export const SearchPage: FC = () => {
               data-testid="tab-programs"
               onClick={() => setResultType('programs')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${resultType === 'programs'
-                  ? 'bg-primary text-white active'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                ? 'bg-primary text-white active'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
             >
               Programs ({programs.length})
@@ -179,8 +180,8 @@ export const SearchPage: FC = () => {
               data-testid="tab-institutions"
               onClick={() => setResultType('institutions')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${resultType === 'institutions'
-                  ? 'bg-primary text-white active'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                ? 'bg-primary text-white active'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
             >
               Institutions ({institutions.length})
@@ -262,37 +263,38 @@ export const SearchPage: FC = () => {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                       {displayedPrograms.map((program) => (
-                        <ProgramCard
-                          key={program.id}
-                          program={{
-                            id: program.id,
-                            slug: program.slug,
-                            name: program.name,
-                            degree_type: program.degree_type as import('@admitly/types').DegreeType,
-                            duration_years: program.duration_years || 0,
-                            mode: (program.mode || 'full_time') as 'full_time' | 'part_time' | 'online' | 'hybrid',
-                            tuition_per_year: program.tuition_annual || 0,
-                            cutoff_score: program.cutoff_score,
-                            institution_id: program.institution_id,
-                            status: 'published',
-                            created_at: '',
-                            updated_at: '',
-                            institution: {
-                              id: program.institution_id,
-                              slug: program.institution_slug,
-                              name: program.institution_name,
-                              state: program.institution_state as import('@admitly/types').NigerianState,
-                              type: 'federal_university',
-                              city: '',
-                              verified: true,
+                        <div key={program.id} data-testid="result-card">
+                          <ProgramCard
+                            program={{
+                              id: program.id,
+                              slug: program.slug,
+                              name: program.name,
+                              degree_type: program.degree_type as import('@admitly/types').DegreeType,
+                              duration_years: program.duration_years || 0,
+                              mode: (program.mode || 'full_time') as 'full_time' | 'part_time' | 'online' | 'hybrid',
+                              tuition_per_year: program.tuition_annual || 0,
+                              cutoff_score: program.cutoff_score,
+                              institution_id: program.institution_id,
                               status: 'published',
-                              program_count: 0,
                               created_at: '',
                               updated_at: '',
-                            },
-                          }}
-                          showInstitution
-                        />
+                              institution: {
+                                id: program.institution_id,
+                                slug: program.institution_slug,
+                                name: program.institution_name,
+                                state: program.institution_state as import('@admitly/types').NigerianState,
+                                type: 'federal_university',
+                                city: '',
+                                verified: true,
+                                status: 'published',
+                                program_count: 0,
+                                created_at: '',
+                                updated_at: '',
+                              },
+                            }}
+                            showInstitution
+                          />
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -306,25 +308,26 @@ export const SearchPage: FC = () => {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                       {displayedInstitutions.map((institution) => (
-                        <InstitutionCard
-                          key={institution.id}
-                          institution={{
-                            id: institution.id,
-                            slug: institution.slug,
-                            name: institution.name,
-                            short_name: institution.short_name,
-                            type: institution.type as import('@admitly/types').InstitutionType,
-                            state: institution.state as import('@admitly/types').NigerianState,
-                            city: institution.city,
-                            logo_url: institution.logo_url,
-                            website: institution.website,
-                            verified: institution.verified,
-                            program_count: institution.program_count,
-                            status: 'published',
-                            created_at: '',
-                            updated_at: '',
-                          }}
-                        />
+                        <div key={institution.id} data-testid="result-card">
+                          <InstitutionCard
+                            institution={{
+                              id: institution.id,
+                              slug: institution.slug,
+                              name: institution.name,
+                              short_name: institution.short_name,
+                              type: institution.type as import('@admitly/types').InstitutionType,
+                              state: institution.state as import('@admitly/types').NigerianState,
+                              city: institution.city,
+                              logo_url: institution.logo_url,
+                              website: institution.website,
+                              verified: institution.verified,
+                              program_count: institution.program_count,
+                              status: 'published',
+                              created_at: '',
+                              updated_at: '',
+                            }}
+                          />
+                        </div>
                       ))}
                     </div>
                   </div>

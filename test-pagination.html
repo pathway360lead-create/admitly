@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pagination Test</title>
+</head>
+<body>
+    <h1>Institutions Pagination Test</h1>
+    <div id="results"></div>
+    <button id="page1">Page 1</button>
+    <button id="page2">Page 2</button>
+
+    <script>
+        const API_URL = 'https://admitly-api.onrender.com';
+        const resultsDiv = document.getElementById('results');
+
+        async function fetchPage(page) {
+            resultsDiv.innerHTML = `<p>Loading page ${page}...</p>`;
+
+            try {
+                const response = await fetch(`${API_URL}/api/v1/institutions?page=${page}&page_size=20`);
+                const data = await response.json();
+
+                resultsDiv.innerHTML = `
+                    <h2>Page ${data.pagination.page} of ${data.pagination.total_pages}</h2>
+                    <p>Total: ${data.pagination.total} institutions</p>
+                    <p>Showing: ${data.data.length} institutions</p>
+                    <h3>First 3 institutions on this page:</h3>
+                    <ol>
+                        ${data.data.slice(0, 3).map(inst => `<li>${inst.name} (ID: ${inst.id.slice(0, 8)}...)</li>`).join('')}
+                    </ol>
+                `;
+            } catch (error) {
+                resultsDiv.innerHTML = `<p style="color: red">Error: ${error.message}</p>`;
+            }
+        }
+
+        document.getElementById('page1').addEventListener('click', () => fetchPage(1));
+        document.getElementById('page2').addEventListener('click', () => fetchPage(2));
+
+        // Auto-test on load
+        fetchPage(1);
+    </script>
+</body>
+</html>

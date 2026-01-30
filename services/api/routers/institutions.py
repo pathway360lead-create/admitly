@@ -91,6 +91,49 @@ async def list_institutions(
 
 
 @router.get(
+    "/by-id/{institution_id}",
+    response_model=InstitutionResponse,
+    summary="Get institution by ID",
+    description="""
+Get detailed information about a specific institution by its UUID.
+
+**Note:** This endpoint is used by the comparison feature which stores entity IDs.
+For SEO-friendly URLs, use the /{slug} endpoint instead.
+
+**Path Parameter:**
+- **institution_id**: Institution UUID
+
+**Response:**
+Returns full institution details including:
+- Basic information (name, type, location)
+- Contact details (address, phone, email)
+- Accreditation information
+- Program count
+
+**Errors:**
+- 404: Institution not found or not published
+- 500: Database error
+""",
+)
+async def get_institution_by_id(
+    institution_id: str = Path(
+        ...,
+        description="Institution UUID",
+        example="550e8400-e29b-41d4-a716-446655440000"
+    ),
+    service: InstitutionService = Depends(get_institution_service)
+):
+    """
+    Get institution details by UUID
+
+    Used by comparison feature which stores entity IDs.
+    Returns full institution information including contact details,
+    accreditation status, and verification information.
+    """
+    return await service.get_by_id(institution_id)
+
+
+@router.get(
     "/{slug}",
     response_model=InstitutionResponse,
     summary="Get institution by slug",

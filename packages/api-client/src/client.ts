@@ -61,6 +61,16 @@ export class AdmitlyAPIClient {
     // Response interceptor - unwrap { success: true, data: ... } responses
     this.client.interceptors.response.use(
       (response) => {
+        // Check for HTML response (proxy failure or SPA fallback)
+        const contentType = response.headers['content-type'];
+        if (contentType && typeof contentType === 'string' && contentType.includes('text/html')) {
+          throw new APIError(
+            'Received HTML response. This usually means the API proxy is not working. Please restart your dev server.',
+            'INVALID_RESPONSE',
+            response.status
+          );
+        }
+
         // If response has { success: true, data: ... }, unwrap to just data
         if (response.data && response.data.success === true) {
           // For paginated responses, keep the pagination info
@@ -377,12 +387,18 @@ export class AdmitlyAPIClient {
   }
 
   async getInstitution(id: string): Promise<Institution> {
-    const { data } = await this.client.get(`/api/v1/institutions/${id}`);
+    // Use by-id endpoint for UUID lookups (used by comparison feature)
+    const { data } = await this.client.get(`/api/v1/institutions/by-id/${id}`);
     return data;
   }
 
   async getPrograms(params?: SearchParams): Promise<PaginatedResponse<Program>> {
+    console.log('[APIClient] getPrograms called with params:', params);
     const { data } = await this.client.get('/api/v1/programs', { params });
+    console.log('[APIClient] getPrograms response:', {
+      dataCount: data.data?.length,
+      pagination: data.pagination
+    });
     return data;
   }
 

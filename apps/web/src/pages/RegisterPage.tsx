@@ -7,6 +7,7 @@ import { Button } from '@admitly/ui';
 import { Mail, Lock, User, AlertCircle, CheckCircle } from 'lucide-react';
 import type { UserRole } from '@admitly/types';
 import { registerSchema, type RegisterFormData } from '@/lib/validation';
+import admitlyLogo from '@/assets/images/admitly-logo.png';
 
 export const RegisterPage: FC = () => {
   const navigate = useNavigate();
@@ -83,9 +84,9 @@ export const RegisterPage: FC = () => {
         {/* Header */}
         <div className="text-center">
           <img
-            src="/src/assets/images/admitly-logo.png"
+            src={admitlyLogo}
             alt="Admitly"
-            className="h-12 mx-auto mb-6"
+            className="h-20 sm:h-24 mx-auto mb-6"
           />
           <h2 className="text-3xl font-bold text-gray-900">Create your account</h2>
           <p className="mt-2 text-sm text-gray-600">
@@ -219,11 +220,10 @@ export const RegisterPage: FC = () => {
                 {roleOptions.map((option) => (
                   <label
                     key={option.value}
-                    className={`flex items-start p-3 border rounded-lg cursor-pointer transition-colors ${
-                      selectedRole === option.value
+                    className={`flex items-start p-3 border rounded-lg cursor-pointer transition-colors ${selectedRole === option.value
                         ? 'border-primary bg-primary/5'
                         : 'border-gray-300 hover:border-gray-400'
-                    }`}
+                      }`}
                   >
                     <input
                       {...register('role')}

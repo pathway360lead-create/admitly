@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@admitly/ui';
 import { Mail, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react';
 import { forgotPasswordSchema, type ForgotPasswordFormData } from '@/lib/validation';
+import admitlyLogo from '@/assets/images/admitly-logo.png';
 
 export const ForgotPasswordPage: FC = () => {
   const { resetPassword, isLoading } = useAuth();
@@ -39,9 +40,9 @@ export const ForgotPasswordPage: FC = () => {
         {/* Header */}
         <div className="text-center">
           <img
-            src="/src/assets/images/admitly-logo.png"
+            src={admitlyLogo}
             alt="Admitly"
-            className="h-12 mx-auto mb-6"
+            className="h-20 sm:h-24 mx-auto mb-6"
           />
           <h2 className="text-3xl font-bold text-gray-900">Reset your password</h2>
           <p className="mt-2 text-sm text-gray-600">

@@ -185,6 +185,63 @@ class InstitutionService:
                 detail=f"Failed to fetch institution: {str(e)}"
             )
 
+    async def get_by_id(self, institution_id: str) -> InstitutionResponse:
+        """
+        Get single institution by UUID
+
+        Used by comparison feature which stores entity IDs.
+
+        Args:
+            institution_id: Institution UUID
+
+        Returns:
+            InstitutionResponse with full details
+
+        Raises:
+            HTTPException: 404 if not found, 500 on database errors
+        """
+        try:
+            # Query by id with status filters
+            response = (
+                self.supabase.table('institutions')
+                .select('*')
+                .eq('id', institution_id)
+                .eq('status', 'published')
+                .is_('deleted_at', 'null')
+                .execute()
+            )
+
+            # response.data will be [] if no match, or [institution_dict] if match
+            if not response.data or len(response.data) == 0:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Institution with id '{institution_id}' not found"
+                )
+
+            # Add program_count (optimized: use count='exact' for single query)
+            institution_data = response.data[0]  # Get first (and only) item from list
+            program_count_response = (
+                self.supabase.table('programs')
+                .select('*', count='exact')
+                .eq('institution_id', institution_data['id'])
+                .eq('status', 'published')
+                .is_('deleted_at', 'null')
+                .limit(0)  # We only need the count, not the data
+                .execute()
+            )
+            institution_data['program_count'] = program_count_response.count or 0
+
+            return InstitutionResponse(**institution_data)
+
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Error fetching institution by id '{institution_id}': {str(e)}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Failed to fetch institution: {str(e)}"
+            )
+
     async def get_programs(
         self,
         slug: str,

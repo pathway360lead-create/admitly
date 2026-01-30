@@ -1,9 +1,9 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { createClient } from '@admitly/api-client';
+import { apiClient } from '@/lib/api';
 import type { ApplicationWindow, DeadlineFilters } from '@admitly/types';
 
 // Create API client instance
-const apiClient = createClient(import.meta.env.VITE_API_URL || 'http://localhost:8000');
+// Client imported from @/lib/api
 
 /**
  * Get application deadlines with filters
