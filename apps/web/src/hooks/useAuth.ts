@@ -18,16 +18,15 @@ interface RegisterData {
 
 export function useAuth() {
   const navigate = useNavigate();
-  const { user, profile, isLoading, isAuthenticated, setUser, setProfile, setLoading, initialize, logout } = useAuthStore();
+  const { user, profile, isLoading, isAuthenticated, setUser, setProfile, setLoading, logout } = useAuthStore();
 
   useEffect(() => {
-    // Initialize auth state on mount
-    initialize();
-
-    // Listen for auth state changes
+    // Listen for auth state changes - Supabase's recommended pattern
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('[useAuth] Auth event:', event);
+
       if (event === 'SIGNED_IN' && session) {
         setUser(session.user);
 
@@ -41,16 +40,37 @@ export function useAuth() {
         if (profile) {
           setProfile(profile);
         }
+        setLoading(false);
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
         setProfile(null);
+        setLoading(false);
+      } else if (event === 'INITIAL_SESSION') {
+        // This fires when auth initializes
+        if (session?.user) {
+          setUser(session.user);
+
+          // Fetch user profile
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+
+          if (profile) {
+            setProfile(profile);
+          }
+        }
+        // ALWAYS set loading false after INITIAL_SESSION
+        setLoading(false);
       }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [initialize, setUser, setProfile]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty deps - only run on mount
 
   const login = async ({ email, password }: LoginCredentials) => {
     try {
@@ -92,35 +112,46 @@ export function useAuth() {
     try {
       setLoading(true);
 
-      // Sign up user
-      const { data, error } = await supabase.auth.signUp({
+      // Create auth user with metadata for the trigger
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
             full_name: fullName,
-            role,
+            role: role,
           },
         },
       });
 
-      if (error) throw error;
+      if (authError) throw authError;
 
-      if (data.user) {
-        // Create user profile (this might be handled by a database trigger)
-        const { error: profileError } = await supabase.from('user_profiles').insert({
-          id: data.user.id,
-          email,
-          full_name: fullName,
-          role,
-          subscription_status: 'free',
-        });
+      // Check if email confirmation is required
+      if (authData.user && !authData.session) {
+        // Email confirmation required
+        return {
+          success: true,
+          requiresEmailConfirmation: true,
+          message: 'Please check your email to confirm your account.'
+        };
+      }
 
-        if (profileError) {
-          console.error('Profile creation error:', profileError);
+      if (authData.user && authData.session) {
+        // User is immediately authenticated (email confirmation disabled)
+        setUser(authData.user);
+
+        // Fetch the auto-created profile
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', authData.user.id)
+          .single();
+
+        if (profile) {
+          setProfile(profile);
         }
 
-        return { success: true, user: data.user };
+        return { success: true, requiresEmailConfirmation: false };
       }
 
       return { success: false, error: 'Registration failed' };
@@ -134,7 +165,6 @@ export function useAuth() {
 
   const loginWithOAuth = async (provider: 'google' | 'facebook') => {
     try {
-      setLoading(true);
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -148,8 +178,6 @@ export function useAuth() {
     } catch (error: any) {
       console.error('OAuth login error:', error);
       return { success: false, error: error.message };
-    } finally {
-      setLoading(false);
     }
   };
 

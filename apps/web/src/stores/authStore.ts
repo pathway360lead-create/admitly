@@ -38,17 +38,11 @@ export const useAuthStore = create<AuthState>()(
 
       initialize: async () => {
         try {
-          set({ isLoading: true });
-
-          // Get current session
-          const {
-            data: { session },
-          } = await supabase.auth.getSession();
+          const { data: { session } } = await supabase.auth.getSession();
 
           if (session?.user) {
             set({ user: session.user, isAuthenticated: true });
 
-            // Fetch user profile
             const { data: profile } = await supabase
               .from('user_profiles')
               .select('*')
@@ -58,12 +52,9 @@ export const useAuthStore = create<AuthState>()(
             if (profile) {
               set({ profile });
             }
-          } else {
-            set({ user: null, profile: null, isAuthenticated: false });
           }
         } catch (error) {
-          console.error('Error initializing auth:', error);
-          set({ user: null, profile: null, isAuthenticated: false });
+          console.error('Auth init error:', error);
         } finally {
           set({ isLoading: false });
         }
@@ -73,9 +64,12 @@ export const useAuthStore = create<AuthState>()(
         try {
           await supabase.auth.signOut();
           set({ user: null, profile: null, isAuthenticated: false });
+          localStorage.removeItem('auth-storage');
         } catch (error) {
-          console.error('Error logging out:', error);
-          throw error;
+          console.error('Logout error:', error);
+          // Force clear even on error
+          set({ user: null, profile: null, isAuthenticated: false });
+          localStorage.removeItem('auth-storage');
         }
       },
     }),

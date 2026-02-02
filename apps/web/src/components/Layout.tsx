@@ -1,8 +1,8 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Header } from './organisms/Header';
-import { Footer } from './organisms/Footer';
+import { Header } from '@/components/organisms/Header';
+import { Footer } from '@/components/organisms/Footer';
 import { ComparisonTray } from './organisms/ComparisonTray';
 import { Toaster } from './ui/toaster';
 
@@ -23,8 +23,31 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
     navigate('/register');
   };
 
+  const isLoggingOut = useRef(false);
+
   const handleLogout = async () => {
-    await logout();
+    if (isLoggingOut.current) {
+      console.log('[Layout] Logout already in progress, ignoring');
+      return;
+    }
+
+    isLoggingOut.current = true;
+    console.log('[Layout] handleLogout called');
+
+    try {
+      console.log('[Layout] Calling logout...');
+      await logout();
+      console.log('[Layout] Logout successful, navigating home...');
+      navigate('/');
+    } catch (error) {
+      console.error('[Layout] Logout error:', error);
+      navigate('/');
+    } finally {
+      // Reset after a short delay
+      setTimeout(() => {
+        isLoggingOut.current = false;
+      }, 1000);
+    }
   };
 
   return (

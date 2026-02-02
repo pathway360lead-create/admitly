@@ -42,10 +42,17 @@ export const RegisterPage: FC = () => {
     });
 
     if (result.success) {
-      setSuccess(true);
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 2000);
+      if (result.requiresEmailConfirmation) {
+        // Show email confirmation message
+        setSuccess(true);
+        setError('Please check your email and click the confirmation link to complete your registration.');
+      } else {
+        // Immediate login (email confirmation disabled)
+        setSuccess(true);
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 2000);
+      }
     } else {
       setError(result.error || 'Registration failed. Please try again.');
     }
@@ -221,8 +228,8 @@ export const RegisterPage: FC = () => {
                   <label
                     key={option.value}
                     className={`flex items-start p-3 border rounded-lg cursor-pointer transition-colors ${selectedRole === option.value
-                        ? 'border-primary bg-primary/5'
-                        : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-primary bg-primary/5'
+                      : 'border-gray-300 hover:border-gray-400'
                       }`}
                   >
                     <input
