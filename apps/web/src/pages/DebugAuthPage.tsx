@@ -18,7 +18,7 @@ export const DebugAuthPage: FC = () => {
                 startsWithHttps: url?.startsWith('https://'),
                 containsQuotes: url?.includes('"') || url?.includes("'"),
                 hasWhitespace: url?.trim() !== url,
-                // Show first 8 chars safely to verify correct project
+                // Show first 15 chars safely to verify correct project
                 preview: url ? `${url.substring(0, 15)}...` : 'undefined'
             },
             VITE_SUPABASE_ANON_KEY: {
@@ -31,12 +31,10 @@ export const DebugAuthPage: FC = () => {
         try {
             // @ts-ignore - Accessing internal property for debugging
             const authUrl = supabase.auth.url;
-            // OR checks generic supabase URL
 
             setAuthCheck(prev => ({
                 ...prev,
                 clientInitialized: true,
-                // Check if we can get a session (even if null)
                 sessionCheck: 'attempting...'
             }));
 
@@ -59,6 +57,37 @@ export const DebugAuthPage: FC = () => {
             setAuthCheck({ status: 'crashed', error: err.message });
         }
     }, []);
+
+    const testSignIn = async () => {
+        setAuthCheck(prev => ({ ...prev, signInTest: 'attempting...' }));
+        try {
+            // Attempt login with dummy credentials to check if fetch URL is valid
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: 'test@example.com',
+                password: 'password123'
+            });
+
+            if (error) {
+                // Determine if it's the "Invalid value" error or just "Invalid login credentials"
+                // "Invalid login credentials" means the REQUEST WENT THROUGH (Good!)
+                setAuthCheck(prev => ({
+                    ...prev,
+                    signInTest: 'completed',
+                    result: error.message,
+                    isNetworkError: error.message.includes('Invalid value')
+                }));
+            } else {
+                setAuthCheck(prev => ({ ...prev, signInTest: 'success', data }));
+            }
+        } catch (err: any) {
+            setAuthCheck(prev => ({
+                ...prev,
+                signInTest: 'crashed',
+                crashError: err.message,
+                stack: err.stack
+            }));
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-100 p-8 font-mono text-sm">
@@ -86,6 +115,19 @@ export const DebugAuthPage: FC = () => {
                     <pre className="bg-gray-50 p-4 rounded overflow-auto">
                         {JSON.stringify(authCheck, null, 2)}
                     </pre>
+                    <div className="mt-4">
+                        <h3 className="font-bold mb-2">Interactive Tests</h3>
+                        <button
+                            onClick={testSignIn}
+                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        >
+                            Test specific SignInWithPassword
+                        </button>
+                        <p className="mt-2 text-gray-600 text-xs">
+                            Click to attempt a fake login. If it returns "Invalid login credentials", configs are GOOD.
+                            If it returns "Invalid value" or crashes, configs are BAD.
+                        </p>
+                    </div>
                 </div>
 
                 <div className="text-center">
