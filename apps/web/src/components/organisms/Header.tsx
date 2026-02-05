@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, User, LogOut } from 'lucide-react';
 import { Button } from '@admitly/ui';
 import admitlyLogo from '@/assets/images/admitly-logo.png';
@@ -31,22 +32,22 @@ export const Header: FC<HeaderProps> = ({
       <nav className="container mx-auto flex h-20 md:h-24 items-center px-4">
         {/* Logo */}
         <div className="flex items-center gap-2 mr-8">
-          <a href="/" className="flex items-center">
-            <img src={admitlyLogo} alt="Admitly" className="h-16 sm:h-18 md:h-20" />
-          </a>
+          <Link to="/" className="flex items-center">
+            <img src={admitlyLogo} alt="Admitly" className="h-32 sm:h-36 md:h-40" />
+          </Link>
         </div>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex md:flex-1 md:items-center md:justify-between">
           <div className="flex gap-6">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -55,10 +56,10 @@ export const Header: FC<HeaderProps> = ({
             {isAuthenticated ? (
               <>
                 <Button variant="ghost" size="sm" asChild>
-                  <a href="/dashboard">
+                  <Link to="/dashboard">
                     <User className="h-4 w-4 mr-2" />
                     Dashboard
-                  </a>
+                  </Link>
                 </Button>
                 {onLogout && (
                   <Button variant="outline" size="sm" onClick={onLogout}>
@@ -99,25 +100,33 @@ export const Header: FC<HeaderProps> = ({
         <div className="md:hidden border-t">
           <div className="container mx-auto px-4 py-4 space-y-3">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="block py-2 text-base font-medium text-muted-foreground hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
             <div className="pt-3 border-t space-y-2">
               {isAuthenticated ? (
                 <>
                   <Button variant="ghost" className="w-full" asChild>
-                    <a href="/dashboard">
+                    <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
                       <User className="h-4 w-4 mr-2" />
                       Dashboard
-                    </a>
+                    </Link>
                   </Button>
                   {onLogout && (
-                    <Button variant="outline" className="w-full" onClick={onLogout}>
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        onLogout();
+                      }}
+                    >
                       <LogOut className="h-4 w-4 mr-2" />
                       Logout
                     </Button>
