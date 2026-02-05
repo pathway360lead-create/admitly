@@ -1,10 +1,11 @@
 import { FC, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useBookmarkStore } from '@/stores/bookmarkStore';
 import { useComparisonStore } from '@/stores/comparisonStore';
 import { Button } from '@admitly/ui';
 import { DashboardSidebar, DashboardWelcome, DashboardStats } from '@/components/organisms';
-import { School, GitCompare, Bell, FileText, Bookmark, Settings } from 'lucide-react';
+import { School, GitCompare, Bell, FileText, Bookmark, Settings, Menu } from 'lucide-react';
 import { mockPrograms, mockInstitutions } from '@/lib/mockData';
 
 export const DashboardPage: FC = () => {
@@ -12,6 +13,8 @@ export const DashboardPage: FC = () => {
   const bookmarks = useBookmarkStore((state) => state.bookmarks);
   // const comparisonItems = useComparisonStore((state) => state.items); // Unused for now
   const [activeTab, setActiveTab] = useState('overview');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const isLoggingOut = useRef(false);
 
   // Helper to handle tab changes from sidebar
@@ -45,16 +48,27 @@ export const DashboardPage: FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar (Hidden on mobile, defined in DashboardSidebar) */}
+      {/* Sidebar (Responsive: Drawer on mobile, Fixed on desktop) */}
       <DashboardSidebar
         activeTab={activeTab}
         onTabChange={handleTabChange}
         onLogout={handleLogout}
+        mobileOpen={mobileMenuOpen}
+        onMobileClose={() => setMobileMenuOpen(false)}
       />
 
       {/* Main Content Area */}
       <div className="flex-1 min-w-0">
         <div className="container mx-auto px-4 py-8 md:px-8 max-w-6xl">
+
+          {/* Mobile Menu Trigger (Visible only on mobile) */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="md:hidden fixed bottom-6 right-6 z-30 bg-primary text-primary-foreground p-4 rounded-full shadow-lg hover:bg-primary/90 transition-colors"
+            aria-label="Open menu"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
 
           {/* Header / Welcome Area */}
           <div className="mb-8">
