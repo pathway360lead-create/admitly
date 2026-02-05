@@ -17,6 +17,7 @@ import { RegisterPage } from './pages/RegisterPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { DashboardTestPage } from './pages/DashboardTestPage';
+import { DebugAuthPage } from './pages/DebugAuthPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsOfServicePage } from './pages/TermsOfServicePage';
 
@@ -56,6 +57,7 @@ function App() {
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
                   <Route path="/terms" element={<TermsOfServicePage />} />
                   <Route path="/dashboard-test" element={<DashboardTestPage />} />
+                  <Route path="/debug-auth" element={<DebugAuthPage />} />
                   <Route
                     path="/dashboard"
                     element={
