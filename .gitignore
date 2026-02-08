@@ -84,3 +84,5 @@ credentials.md
 .env.local
 .env.*.local
 .mcp.json
+
+debug_archive/

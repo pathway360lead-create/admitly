@@ -7,7 +7,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Dict, Optional
 from supabase import Client
 
-from core.dependencies import get_current_admin_user, get_supabase
+from core.dependencies import get_admin_context, get_current_admin_user, get_supabase
 from core.database import get_supabase_with_token
 from services.admin_institution_service import AdminInstitutionService
 from services.admin_program_service import AdminProgramService
@@ -26,36 +26,26 @@ security = HTTPBearer()  # For extracting JWT tokens from Authorization header
 
 
 def get_admin_institution_service(
-    current_user = Depends(get_current_admin_user),
-    credentials: HTTPAuthorizationCredentials = Depends(security),
+    admin_context = Depends(get_admin_context),
 ) -> AdminInstitutionService:
     """
-    Get admin institution service with user's authenticated client
+    Get admin institution service with authenticated client
     
-    RLS policies enforce internal_admin role check.
-    User's JWT token is used to create client, enabling:
-    - Role-based access control via RLS
-    - Audit trail via auth.uid()
-    - Defense in depth security
+    admin_context is a tuple of (user, authenticated_supabase_client)
     """
-    supabase = get_supabase_with_token(credentials.credentials)
+    current_user, supabase = admin_context
     return AdminInstitutionService(supabase)
 
 
 def get_admin_program_service(
-    current_user = Depends(get_current_admin_user),
-    credentials: HTTPAuthorizationCredentials = Depends(security),
+    admin_context = Depends(get_admin_context),
 ) -> AdminProgramService:
     """
-    Get admin program service with user's authenticated client
+    Get admin program service with authenticated client
     
-    RLS policies enforce internal_admin role check.
-    User's JWT token is used to create client, enabling:
-    - Role-based access control via RLS
-    - Audit trail via auth.uid()
-    - Defense in depth security
+    admin_context is a tuple of (user, authenticated_supabase_client)
     """
-    supabase = get_supabase_with_token(credentials.credentials)
+    current_user, supabase = admin_context
     return AdminProgramService(supabase)
 
 

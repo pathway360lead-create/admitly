@@ -313,7 +313,7 @@ class ProgramAdminResponse(BaseModel):
     degree_type: str
     duration_years: int
     mode: str
-    tuition_per_year: int
+    tuition_per_year: Optional[int] = None
     acceptance_fee: Optional[int] = None
     cutoff_score: Optional[int] = None
     accreditation_status: Optional[str] = None

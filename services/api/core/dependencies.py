@@ -46,47 +46,39 @@ async def get_current_user(
 
 
 async def get_current_admin_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security), # Need token
     current_user = Depends(get_current_user),
     supabase: Client = Depends(get_supabase),
 ):
     """
     Require admin role
 
-    Checks user_profiles table for role = 'admin'
+    Checks user_profiles table for role = 'internal_admin'
     Raises 403 Forbidden if user is not admin
     """
     try:
-        # Debug current_user structure
-        print(f"\n[DEBUG] current_user type: {type(current_user)}")
-        print(f"[DEBUG] current_user: {current_user}")
+        # Authenticate the client so RLS works
+        token = credentials.credentials
+        supabase.postgrest.auth(token)
         
         # Extract user ID from Supabase auth response
-        # Handle both old and new Supabase response formats
         if hasattr(current_user, 'user') and current_user.user:
             user_id = current_user.user.id
         elif hasattr(current_user, 'id'):
             user_id = current_user.id
         else:
-            print(f"[DEBUG] Cannot find user.id in current_user!")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not extract user ID from token"
             )
         
-        print(f"[DEBUG] Admin check for user_id: {user_id}")
-
         # Query user_profiles table for role
-        print(f"[DEBUG] Querying user_profiles table...")
         response = supabase.table('user_profiles').select('role').eq('id', user_id).maybe_single().execute()
-        print(f"[DEBUG] Query response type: {type(response)}")
-        print(f"[DEBUG] Query response: {response}")
         
-        # Handle response - maybe_single returns APIResponse with .data attribute
+        # Handle response
         profile_data = response.data if hasattr(response, 'data') else response
-        print(f"[DEBUG] Profile data: {profile_data}")
 
         if not profile_data:
-            print(f"[DEBUG] No profile found for user {user_id}")
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Admin access denied: User profile not found"
@@ -97,30 +89,90 @@ async def get_current_admin_user(
             user_role = profile_data.get('role')
         else:
             user_role = None
-        print(f"[DEBUG] User role: {user_role}")
 
         if user_role != 'internal_admin':
-            print(f"[DEBUG] Role mismatch: {user_role} != 'internal_admin'")
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Admin access denied: Insufficient permissions"
             )
 
-        print(f"[DEBUG] Admin check PASSED for user {user_id}")
         return current_user
 
     except HTTPException:
         raise
     except Exception as e:
-        print(f"\n[DEBUG] !!! EXCEPTION in get_current_admin_user !!!")
-        print(f"[DEBUG] Error: {str(e)}")
-        print(f"[DEBUG] Type: {type(e).__name__}")
-        print(f"[DEBUG] Repr: {repr(e)}")
-        import traceback
-        traceback.print_exc()
         logger.error(f"Error checking admin permissions for user: {str(e)}")
-        logger.error(f"Exception type: {type(e).__name__}")
-        logger.error(f"Exception details: {repr(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error checking admin permissions: {str(e)}"
+        )
+
+
+async def get_admin_context(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Get authenticated admin user and Supabase client
+    
+    Returns tuple of (user, authenticated_client)
+    This dependency does NOT depend on get_current_user to avoid duplicate credential injection.
+    """
+    try:
+        token = credentials.credentials
+        
+        # Create authenticated client
+        supabase = get_supabase()
+        supabase.postgrest.auth(token)
+        
+        # Validate token and get user (doing what get_current_user does)
+        try:
+            current_user = supabase.auth.get_user(token)
+            if not current_user:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid authentication credentials",
+                )
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials",
+            )
+        
+        # Extract user ID
+        if hasattr(current_user, 'user') and current_user.user:
+            user_id = current_user.user.id
+        elif hasattr(current_user, 'id'):
+            user_id = current_user.id
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not extract user ID from token"
+            )
+        
+        # Check admin role
+        response = supabase.table('user_profiles').select('role').eq('id', user_id).maybe_single().execute()
+        profile_data = response.data if hasattr(response, 'data') else response
+
+        if not profile_data:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Admin access denied: User profile not found"
+            )
+
+        user_role = profile_data.get('role') if isinstance(profile_data, dict) else None
+
+        if user_role != 'internal_admin':
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Admin access denied: Insufficient permissions"
+            )
+
+        return (current_user, supabase)
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in get_admin_context: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error checking admin permissions: {str(e)}"
