@@ -3,7 +3,20 @@ import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { Users, GraduationCap, Building2, BookOpen } from 'lucide-react';
 
-const stats = [
+interface StatItem {
+    label: string;
+    value: number;
+    suffix?: string;
+    prefix?: string;
+    icon: any; // Lucide icon or string name if mapped
+    color: string;
+}
+
+interface StatsSectionProps {
+    stats?: StatItem[];
+}
+
+const defaultStats = [
     { label: 'Verified Institutions', value: 200, suffix: '+', icon: Building2, color: 'text-blue-600' },
     { label: 'Active Students', value: 15000, suffix: '+', icon: Users, color: 'text-green-600' },
     { label: 'Available Programs', value: 500, suffix: '+', icon: BookOpen, color: 'text-purple-600' },
@@ -41,7 +54,31 @@ const Counter = ({ from, to }: { from: number; to: number }) => {
     return <span ref={ref}>{count.toLocaleString()}</span>;
 };
 
-export const StatsSection: FC = () => {
+export const StatsSection: FC<StatsSectionProps> = ({ stats = defaultStats }) => {
+    // Helper to resolve icon if it's a string from CMS
+    // Note: In real app, we'd need a map of string -> IconComponent
+    // For now, if stats come from CMS, they might have string icons. 
+    // We should handle that or expect the parent to map it.
+    // Let's assume parent maps it or we fallback.
+
+    // Quick icon map for CMS strings
+    const iconMap: Record<string, any> = {
+        'Building2': Building2,
+        'Users': Users,
+        'BookOpen': BookOpen,
+        'GraduationCap': GraduationCap,
+        'Search': Users, // Fallback
+        'BarChart3': Users, // Fallback
+        'Bell': Users // Fallback
+    };
+
+    const displayStats = stats.map(s => {
+        if (typeof s.icon === 'string') {
+            return { ...s, icon: iconMap[s.icon] || Building2 };
+        }
+        return s;
+    });
+
     return (
         <section className="py-20 bg-background relative overflow-hidden">
             {/* Decorative dashed lines */}
@@ -51,7 +88,7 @@ export const StatsSection: FC = () => {
 
             <div className="container mx-auto px-4 relative z-10">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-border/40">
-                    {stats.map((stat, index) => {
+                    {displayStats.map((stat, index) => {
                         const Icon = stat.icon;
                         return (
                             <motion.div

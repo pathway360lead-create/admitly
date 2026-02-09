@@ -37,11 +37,12 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=["*"] if settings.ENVIRONMENT == "development" else settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+print(f"DEBUG: CORS configured. Environment: {settings.ENVIRONMENT}, Origins: {'*' if settings.ENVIRONMENT == 'development' else settings.CORS_ORIGINS}")
 
 
 # Health check endpoint
@@ -76,6 +77,7 @@ from routers.user_profile import router as user_profile_router
 from routers.search_history import router as search_history_router
 from routers.notifications import router as notifications_router
 from routers.admin import router as admin_router
+from routers.deadlines import router as deadlines_router # ADD DEADLINES ROUTER
 
 app.include_router(auth_router, prefix="/api/v1", tags=["auth"])
 app.include_router(institutions_router, prefix="/api/v1")
@@ -87,6 +89,7 @@ app.include_router(user_profile_router, prefix="/api/v1")
 app.include_router(search_history_router, prefix="/api/v1")
 app.include_router(notifications_router, prefix="/api/v1")
 app.include_router(admin_router)  # Admin routes with auth middleware
+app.include_router(deadlines_router) # Register Deadlines Router
 
 
 if __name__ == "__main__":

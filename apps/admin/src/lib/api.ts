@@ -179,9 +179,77 @@ export interface ProgramsListResponse {
   pagination: PaginationMetadata;
 }
 
-// Admin API methods
+// ========== DEADLINE API METHODS ==========
+
+export interface DeadlineCreateData {
+  title: string;
+  description?: string;
+  start_date?: string; // ISO string
+  end_date: string;    // ISO string
+  screening_date?: string; // ISO string
+  type: 'exam' | 'admission' | 'scholarship' | 'event' | 'other';
+  priority: 'high' | 'medium' | 'low';
+  related_entity_type?: 'program' | 'institution' | 'none';
+  related_entity_id?: string;
+  link?: string;
+}
+
+export interface DeadlineUpdateData extends Partial<DeadlineCreateData> { }
+
+export interface Deadline {
+  id: string;
+  title: string;
+  description?: string;
+  start_date?: string;
+  end_date: string;
+  screening_date?: string;
+  type: string;
+  priority: string;
+  related_entity_type: string;
+  related_entity_id?: string;
+  link?: string;
+  created_by?: string;
+  created_at: string;
+  updated_at: string;
+  program?: any;
+  institution?: any;
+}
+
 export const adminAPI = {
-  // Health check
+  // ... existing methods ...
+
+  // Deadlines
+  listDeadlines: async (params?: {
+    type?: string;
+    priority?: string;
+    from_date?: string;
+    limit?: number;
+    offset?: number;
+  }): Promise<Deadline[]> => {
+    const { data } = await apiClient.get('/api/v1/deadlines', { params });
+    return data;
+  },
+
+  getDeadline: async (id: string): Promise<Deadline> => {
+    const { data } = await apiClient.get(`/api/v1/deadlines/${id}`);
+    return data;
+  },
+
+  createDeadline: async (deadline: DeadlineCreateData): Promise<Deadline> => {
+    const { data } = await apiClient.post('/api/v1/deadlines', deadline);
+    return data;
+  },
+
+  updateDeadline: async (id: string, updates: DeadlineUpdateData): Promise<Deadline> => {
+    const { data } = await apiClient.patch(`/api/v1/deadlines/${id}`, updates);
+    return data;
+  },
+
+  deleteDeadline: async (id: string): Promise<void> => {
+    await apiClient.delete(`/api/v1/deadlines/${id}`);
+  },
+
+  // ... (keep previous methods like healthCheck, listInstitutions etc.)
   healthCheck: async () => {
     const { data } = await apiClient.get('/api/v1/admin/health');
     return data;

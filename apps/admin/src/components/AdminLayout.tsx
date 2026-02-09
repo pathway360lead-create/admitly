@@ -8,6 +8,9 @@ import {
   LogOut,
   Menu,
   X,
+  LayoutTemplate,
+  Upload,
+  Calendar,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -34,6 +37,9 @@ export const AdminLayout: FC<AdminLayoutProps> = ({ children }) => {
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/institutions', icon: Building2, label: 'Institutions' },
     { path: '/programs', icon: BookOpen, label: 'Programs' },
+    { path: '/deadlines', icon: Calendar, label: 'Deadlines' },
+    { path: '/cms', icon: LayoutTemplate, label: 'Content Manager' },
+    { path: '/bulk-upload', icon: Upload, label: 'Bulk Upload' },
   ];
 
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
@@ -42,9 +48,8 @@ export const AdminLayout: FC<AdminLayoutProps> = ({ children }) => {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
@@ -69,11 +74,10 @@ export const AdminLayout: FC<AdminLayoutProps> = ({ children }) => {
                   key={item.path}
                   to={item.path}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    active
-                      ? 'bg-primary text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${active
+                    ? 'bg-primary text-white'
+                    : 'text-gray-700 hover:bg-gray-100'
+                    }`}
                 >
                   <Icon className="h-5 w-5" />
                   <span className="font-medium">{item.label}</span>

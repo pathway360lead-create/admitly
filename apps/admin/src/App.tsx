@@ -7,6 +7,10 @@ import { InstitutionsListPage } from './pages/InstitutionsListPage';
 import { InstitutionFormPage } from './pages/InstitutionFormPage';
 import ProgramsListPage from './pages/ProgramsListPage';
 import ProgramFormPage from './pages/ProgramFormPage';
+import { CMSPage } from './pages/CMSPage';
+import { DeadlinesListPage } from './pages/DeadlinesListPage';
+import { DeadlineFormPage } from './pages/DeadlineFormPage';
+import { BulkUploadPage } from './pages/BulkUploadPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 const queryClient = new QueryClient({
@@ -41,6 +45,11 @@ function App() {
                     <Route path="/programs" element={<ProgramsListPage />} />
                     <Route path="/programs/new" element={<ProgramFormPage />} />
                     <Route path="/programs/:id/edit" element={<ProgramFormPage />} />
+                    <Route path="/deadlines" element={<DeadlinesListPage />} />
+                    <Route path="/deadlines/new" element={<DeadlineFormPage />} />
+                    <Route path="/deadlines/:id/edit" element={<DeadlineFormPage />} />
+                    <Route path="/cms" element={<CMSPage />} />
+                    <Route path="/bulk-upload" element={<BulkUploadPage />} />
                   </Routes>
                 </AdminLayout>
               </ProtectedRoute>

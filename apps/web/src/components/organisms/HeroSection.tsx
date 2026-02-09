@@ -5,13 +5,33 @@ import { Button, Badge } from '@admitly/ui';
 import { Play, TrendingUp, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+interface HeroSectionContent {
+    title: string;
+    subtitle: string;
+    badge: string;
+    cta_primary: string;
+    cta_secondary: string;
+}
+
 interface HeroSectionProps {
     onSearch: (query: string) => void;
     initialSearchValue?: string;
+    content?: HeroSectionContent;
 }
 
-export const HeroSection: FC<HeroSectionProps> = ({ onSearch, initialSearchValue }) => {
+export const HeroSection: FC<HeroSectionProps> = ({ onSearch, initialSearchValue, content }) => {
     const navigate = useNavigate();
+
+    // Default content if CMS data is missing
+    const defaultContent: HeroSectionContent = {
+        title: 'Find Your <br /> <span class="text-primary">Dream University</span>',
+        subtitle: "Nigeria's most trusted platform for educational decision-making. Search, compare, and apply to over 200+ institutions.",
+        badge: '🚀 Prepare for your future today',
+        cta_primary: 'Browse Schools',
+        cta_secondary: 'Create Free Account'
+    };
+
+    const { title, subtitle, badge, cta_primary, cta_secondary } = content || defaultContent;
 
     return (
         <section className="relative pt-20 pb-32 overflow-hidden bg-background">
@@ -32,17 +52,16 @@ export const HeroSection: FC<HeroSectionProps> = ({ onSearch, initialSearchValue
                         className="lg:col-span-6 space-y-8 text-center lg:text-left"
                     >
                         <Badge variant="secondary" className="px-4 py-2 text-sm bg-primary/10 text-primary border-primary/20">
-                            🚀 Prepare for your future today
+                            {badge}
                         </Badge>
 
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-heading tracking-tight leading-[1.1]">
-                            Find Your <br />
-                            <span className="text-primary">Dream University</span>
-                        </h1>
+                        <h1
+                            className="text-5xl md:text-6xl lg:text-7xl font-bold font-heading tracking-tight leading-[1.1]"
+                            dangerouslySetInnerHTML={{ __html: title }}
+                        />
 
                         <p className="text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 font-sans leading-relaxed">
-                            Nigeria's most trusted platform for educational decision-making.
-                            Search, compare, and apply to over 200+ institutions.
+                            {subtitle}
                         </p>
 
                         <div className="max-w-md mx-auto lg:mx-0">

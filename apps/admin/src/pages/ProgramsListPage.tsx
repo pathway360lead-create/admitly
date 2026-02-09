@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { adminAPI, Program } from '../lib/api';
-import { Search, Plus, Edit2, Trash2, Eye, CheckCircle, XCircle } from 'lucide-react';
+import { Search, Plus, Edit2, Trash2, CheckCircle, XCircle } from 'lucide-react';
 
 export default function ProgramsListPage() {
   const navigate = useNavigate();
@@ -271,13 +271,12 @@ export default function ProgramsListPage() {
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          program.status === 'published'
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${program.status === 'published'
                             ? 'bg-green-100 text-green-800'
                             : program.status === 'draft'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-gray-100 text-gray-800'
-                        }`}
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-gray-100 text-gray-800'
+                          }`}
                       >
                         {program.status}
                       </span>
@@ -293,11 +292,10 @@ export default function ProgramsListPage() {
                         </button>
                         <button
                           onClick={() => handleStatusChange(program.id, program.status)}
-                          className={`${
-                            program.status === 'published'
+                          className={`${program.status === 'published'
                               ? 'text-yellow-600 hover:text-yellow-900'
                               : 'text-green-600 hover:text-green-900'
-                          } p-1`}
+                            } p-1`}
                           title={program.status === 'published' ? 'Unpublish' : 'Publish'}
                         >
                           {program.status === 'published' ? (

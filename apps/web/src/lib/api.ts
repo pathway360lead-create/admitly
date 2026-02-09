@@ -124,3 +124,50 @@ export async function autocomplete(
   );
   return response.data;
 }
+
+// ===== Deadlines API Methods =====
+
+export interface Deadline {
+  id: string;
+  title: string;
+  description?: string;
+  start_date?: string;
+  end_date: string;
+  screening_date?: string;
+  type: 'exam' | 'admission' | 'scholarship' | 'event' | 'other';
+  priority: 'high' | 'medium' | 'low';
+  related_entity_type: 'program' | 'institution' | 'none';
+  related_entity_id?: string;
+  link?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Fetch all deadlines with optional filtering
+ */
+export async function getDeadlines(params?: {
+  type?: string;
+  priority?: string;
+  from_date?: string;
+  limit?: number;
+}): Promise<Deadline[]> {
+  const queryParams = new URLSearchParams();
+  if (params?.type) queryParams.append('type', params.type);
+  if (params?.priority) queryParams.append('priority', params.priority);
+  if (params?.from_date) queryParams.append('from_date', params.from_date);
+  if (params?.limit) queryParams.append('limit', params.limit.toString());
+
+  const query = queryParams.toString();
+  const response = await api.get<Deadline[]>(`/api/v1/deadlines${query ? `?${query}` : ''}`);
+  return response.data;
+}
+
+/**
+ * Fetch upcoming deadlines (future deadlines sorted by end_date)
+ */
+export async function getUpcomingDeadlines(limit: number = 10): Promise<Deadline[]> {
+  const response = await api.get<Deadline[]>(`/api/v1/deadlines/upcoming?limit=${limit}`);
+  return response.data;
+}
+

@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { HeroSection, NewsFeed, StatsSection } from '../components/organisms';
 import { InstitutionCard } from '../components/molecules/InstitutionCard';
 import { Button } from '@admitly/ui';
-import { mockInstitutions } from '../lib/mockData';
 import { Search, BarChart3, Bell } from 'lucide-react';
+import { useCMSBatch } from '../hooks/useCMS';
+import { useInstitutions } from '../hooks/api/useInstitutions';
 
 export const HomePage: FC = () => {
   const navigate = useNavigate();
@@ -17,20 +18,32 @@ export const HomePage: FC = () => {
     }
   };
 
-  // Featured institutions (top 4)
-  const featuredInstitutions = mockInstitutions.slice(0, 4);
+  // Fetch CMS Content
+  const { contents, loading: cmsLoading } = useCMSBatch(['home_hero', 'home_stats', 'home_features']);
+
+  // Fetch Featured Institutions (Top 4)
+  const { data: institutionsResponse, isLoading: institutionsLoading } = useInstitutions({
+    page: 1,
+    page_size: 4
+  });
+
+  const featuredInstitutions = institutionsResponse?.data || [];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
 
       {/* 1. Hero Section (New) */}
-      <HeroSection onSearch={handleSearch} initialSearchValue={searchQuery} />
+      <HeroSection
+        onSearch={handleSearch}
+        initialSearchValue={searchQuery}
+        content={contents['home_hero']}
+      />
 
       {/* 2. The Feed (New) */}
       <NewsFeed />
 
       {/* 3. Stats (New - Interactive) */}
-      <StatsSection />
+      <StatsSection stats={contents['home_stats']} />
 
       {/* 4. Featured Institutions */}
       <section className="py-20">
